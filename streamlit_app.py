@@ -17,6 +17,8 @@ st.set_page_config(
 
 # Custom CSS for modern and beautiful styling
 st.markdown("""
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
 <style>
     /* Modern color palette and variables */
     :root {
@@ -34,6 +36,11 @@ st.markdown("""
         --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
     }
 
+    /* Global font family */
+    * {
+        font-family: 'Roboto', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif !important;
+    }
+
     /* Global styles */
     .main {
         background: var(--bg-color);
@@ -43,7 +50,7 @@ st.markdown("""
     /* Modern header with clean and compact design */
     .main-header {
         background: var(--primary-gradient);
-        padding: 1.5rem 2rem;
+        padding: 0.75rem 2rem;
         border-radius: 16px;
         color: white;
         text-align: center;
@@ -67,50 +74,52 @@ st.markdown("""
     }
 
     .main-header h1 {
-        font-size: 2rem;
-        font-weight: 600;
-        margin-bottom: 0.5rem;
+        font-size: 1.5rem;
+        font-weight: 700;
+        margin-bottom: 0.25rem;
         text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
         position: relative;
         z-index: 2;
         letter-spacing: -0.01em;
+        font-family: 'Roboto', sans-serif;
     }
 
     .main-header p {
-        font-size: 1rem;
+        font-size: 0.85rem;
         opacity: 1;
         position: relative;
         z-index: 2;
-        font-weight: 500;
+        font-weight: 400;
         letter-spacing: 0.01em;
         margin-bottom: 0;
         text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
         color: #ffffff;
+        font-family: 'Roboto', sans-serif;
     }
 
     /* Responsive header */
     @media (max-width: 768px) {
         .main-header {
-            padding: 1.25rem 1rem;
+            padding: 0.6rem 1rem;
             border-radius: 12px;
         }
         
         .main-header h1 {
-            font-size: 1.75rem;
+            font-size: 1.3rem;
         }
         
         .main-header p {
-            font-size: 0.9rem;
+            font-size: 0.75rem;
         }
     }
 
     @media (max-width: 480px) {
         .main-header h1 {
-            font-size: 1.5rem;
+            font-size: 1.1rem;
         }
         
         .main-header p {
-            font-size: 0.85rem;
+            font-size: 0.7rem;
         }
     }
 
@@ -381,7 +390,7 @@ def get_next_working_day(date, holidays):
         current_date += timedelta(days=1)
     return current_date
 
-def calculate_schedule(syllabus_df, start_date, add_break, break_days, consider_holidays, handle_empty_days=True):
+def calculate_schedule(syllabus_df, start_date, add_break, break_days, consider_holidays, additional_free_days=None):
     """Calculate the course schedule based on the syllabus"""
     
     # Validate data before processing
@@ -396,16 +405,11 @@ def calculate_schedule(syllabus_df, start_date, add_break, break_days, consider_
         st.error(f"❌ Error processing 'Days' column: {str(e)}")
         return pd.DataFrame()
     
-    # Handle empty values based on user preference
+    # Handle empty values - always fill with 0
     if syllabus_df['Days'].isna().any():
-        if handle_empty_days:
-            # Fill empty values with default
-            empty_count = syllabus_df['Days'].isna().sum()
-            syllabus_df['Days'] = syllabus_df['Days'].fillna(0) # Changed to 0
-            st.info(f"ℹ️ Filled {empty_count} empty values in 'Days' column with 0 day(s) each.")
-        else:
-            st.error("❌ Found empty values in the 'Days' column. Please enable 'Handle empty values' option or fill the values manually.")
-            return pd.DataFrame()
+        empty_count = syllabus_df['Days'].isna().sum()
+        syllabus_df['Days'] = syllabus_df['Days'].fillna(0)
+        st.info(f"ℹ️ Filled {empty_count} empty values in 'Days' column with 0 day(s) each.")
     
     # Get holidays if needed
     holidays = set()
@@ -413,6 +417,10 @@ def calculate_schedule(syllabus_df, start_date, add_break, break_days, consider_
         current_year = start_date.year
         holidays = get_hebrew_holidays(current_year)
         holidays.update(get_hebrew_holidays(current_year + 1))
+    
+    # Add additional free days
+    if additional_free_days:
+        holidays.update(additional_free_days)
     
     schedule_data = []
     current_date = start_date
@@ -611,13 +619,61 @@ Object-Oriented Programming,Polymorphism,3
             help="Number of working days for each break period"
         )
         
-        # Data processing settings
-        st.subheader("📊 Data Processing")
-        handle_empty_days = st.checkbox(
-            "Handle empty values in 'Days' column?",
+        # Holiday settings
+        st.subheader("📅 Holiday Settings")
+        consider_holidays = st.checkbox(
+            "Consider Hebrew holidays and weekends?",
             value=True,
-            help="Automatically fill empty days with 0"
+            help="Automatically exclude Hebrew holidays and weekends"
         )
+        
+        # Additional Free Days section
+        st.subheader("🏖️ Additional Free Days")
+        st.info("Add custom free days that will be excluded from the schedule")
+        
+        # Date range option
+        use_date_range = st.checkbox(
+            "Add date range?",
+            help="Select a range of dates to exclude"
+        )
+        
+        date_range_start = None
+        date_range_end = None
+        if use_date_range:
+            col_range1, col_range2 = st.columns(2)
+            with col_range1:
+                date_range_start = st.date_input(
+                    "From",
+                    help="Start date of free period"
+                )
+            with col_range2:
+                date_range_end = st.date_input(
+                    "To",
+                    help="End date of free period"
+                )
+        
+        # Single dates option
+        use_single_dates = st.checkbox(
+            "Add single dates?",
+            help="Select individual dates to exclude"
+        )
+        
+        single_dates = []
+        if use_single_dates:
+            num_single_dates = st.number_input(
+                "Number of single dates",
+                min_value=1,
+                max_value=10,
+                value=1,
+                help="How many individual dates to add"
+            )
+            
+            for i in range(num_single_dates):
+                single_date = st.date_input(
+                    f"Free Date {i+1}",
+                    help=f"Select free date {i+1}"
+                )
+                single_dates.append(single_date)
     
     # Main content area
     col1, col2 = st.columns([2, 1])
@@ -668,10 +724,26 @@ Object-Oriented Programming,Polymorphism,3
                     if st.button("🚀 Generate Schedule", type="primary"):
                         with st.spinner("Generating your course schedule..."):
                             try:
+                                # Prepare additional free days
+                                additional_free_days = set()
+                                
+                                # Add date range if specified
+                                if use_date_range and date_range_start and date_range_end:
+                                    current_date_range = date_range_start
+                                    while current_date_range <= date_range_end:
+                                        additional_free_days.add(current_date_range)
+                                        current_date_range += timedelta(days=1)
+                                
+                                # Add single dates if specified
+                                if use_single_dates and single_dates:
+                                    for single_date in single_dates:
+                                        if single_date:
+                                            additional_free_days.add(single_date)
+                                
                                 # Calculate schedule
                                 schedule_df = calculate_schedule(
                                     syllabus_df, start_date, add_break, break_days, consider_holidays, 
-                                    handle_empty_days
+                                    additional_free_days if additional_free_days else None
                                 )
                                 
                                 # Check if schedule was generated successfully
@@ -681,6 +753,10 @@ Object-Oriented Programming,Polymorphism,3
                                 
                                 # Display results
                                 st.success("✅ Schedule generated successfully!")
+                                
+                                # Show additional free days info
+                                if additional_free_days:
+                                    st.info(f"🏖️ Excluded {len(additional_free_days)} additional free day(s) from the schedule")
                                 
                                 # Show schedule
                                 st.subheader("📅 Generated Schedule")
