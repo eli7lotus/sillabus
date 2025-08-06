@@ -85,7 +85,7 @@ st.markdown("""
     }
 
     .main-header h1 small {
-        font-size: 0.85rem;
+        font-size: 1.2rem;
         opacity: 1;
         font-weight: 400;
         letter-spacing: 0.01em;
@@ -347,7 +347,7 @@ st.markdown("""
         }
         
         .main-header h1 small {
-            font-size: 0.75rem;
+            font-size: 1rem;
             display: block;
             margin-left: 0;
             margin-top: 0.25rem;
@@ -360,7 +360,7 @@ st.markdown("""
         }
         
         .main-header h1 small {
-            font-size: 0.7rem;
+            font-size: 0.9rem;
         }
     }
 </style>
@@ -522,7 +522,7 @@ def main():
     # Header
     st.markdown("""
     <div class="main-header">
-        <h1>📚 Syllabus Calculator <small>Generate course schedules with Hebrew calendar integration</small></h1>
+        <h1>Syllabus Calculator. <small>Generate course schedules with Hebrew calendar integration</small></h1>
     </div>
     """, unsafe_allow_html=True)
     
