@@ -528,16 +528,15 @@ def main():
     
     # Info box with compact instructions
     with st.container():
-        # Instructions section with arrow button
-        col1, col2 = st.columns([1, 20])
+        # Instructions section with small arrow button
+        col1, col2 = st.columns([1, 30])
         with col1:
-            instructions_visible = st.button("▶️" if not 'instructions_visible' in st.session_state else "🔽", key="instructions_btn")
+            if st.button("▶️" if not st.session_state.get('instructions_visible', False) else "🔽", key="instructions_btn", help="Toggle Instructions"):
+                st.session_state['instructions_visible'] = not st.session_state.get('instructions_visible', False)
         with col2:
             st.markdown("**📋 Instructions**")
         
-        if instructions_visible or st.session_state.get('instructions_visible', False):
-            if instructions_visible:
-                st.session_state['instructions_visible'] = True
+        if st.session_state.get('instructions_visible', False):
             st.markdown("""
             **Required CSV Format:**
             - Upload a CSV file with columns: **Main Topic**, **Subtopic**, **Days**
@@ -547,16 +546,15 @@ def main():
             - Breaks can be added after each main topic completion
             """)
         
-        # Sample Format section with arrow button
-        col3, col4 = st.columns([1, 20])
+        # Sample Format section with small arrow button
+        col3, col4 = st.columns([1, 30])
         with col3:
-            sample_visible = st.button("▶️" if not 'sample_visible' in st.session_state else "🔽", key="sample_btn")
+            if st.button("▶️" if not st.session_state.get('sample_visible', False) else "🔽", key="sample_btn", help="Toggle Sample Format"):
+                st.session_state['sample_visible'] = not st.session_state.get('sample_visible', False)
         with col4:
             st.markdown("**📄 Sample Format**")
         
-        if sample_visible or st.session_state.get('sample_visible', False):
-            if sample_visible:
-                st.session_state['sample_visible'] = True
+        if st.session_state.get('sample_visible', False):
             st.markdown("**Required Columns:**")
             st.markdown("""
             - **Main Topic**: The main subject or module name
