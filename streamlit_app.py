@@ -103,7 +103,7 @@ def get_next_working_day(date, holidays):
         current_date += timedelta(days=1)
     return current_date
 
-def calculate_schedule(syllabus_df, start_date, add_break, break_days, consider_holidays, handle_empty_days=True, default_days=1):
+def calculate_schedule(syllabus_df, start_date, add_break, break_days, consider_holidays, handle_empty_days=True):
     """Calculate the course schedule based on the syllabus"""
     
     # Validate data before processing
@@ -123,8 +123,8 @@ def calculate_schedule(syllabus_df, start_date, add_break, break_days, consider_
         if handle_empty_days:
             # Fill empty values with default
             empty_count = syllabus_df['Days'].isna().sum()
-            syllabus_df['Days'] = syllabus_df['Days'].fillna(default_days)
-            st.info(f"ℹ️ Filled {empty_count} empty values in 'Days' column with {default_days} day(s) each.")
+            syllabus_df['Days'] = syllabus_df['Days'].fillna(0) # Changed to 0
+            st.info(f"ℹ️ Filled {empty_count} empty values in 'Days' column with 0 day(s) each.")
         else:
             st.error("❌ Found empty values in the 'Days' column. Please enable 'Handle empty values' option or fill the values manually.")
             return pd.DataFrame()
@@ -246,7 +246,7 @@ Object-Oriented Programming,Polymorphism,3
             
             st.markdown("### 💡 Tips:")
             st.markdown("""
-            - Empty values in 'Days' column are supported and can be filled automatically
+            - Empty values in 'Days' column are automatically filled with 0
             - You can have multiple subtopics under the same main topic
             - Working days exclude weekends (Friday/Saturday) and Hebrew holidays
             - Breaks can be added automatically after each main topic
@@ -341,24 +341,7 @@ Object-Oriented Programming,Polymorphism,3
         handle_empty_days = st.checkbox(
             "Handle empty values in 'Days' column?",
             value=True,
-            help="Automatically fill empty days with default value"
-        )
-        
-        if handle_empty_days:
-            default_days = st.number_input(
-                "Default days for empty values",
-                min_value=1,
-                max_value=30,
-                value=1,
-                help="Number of days to assign when 'Days' column is empty"
-            )
-        
-        # Holiday settings
-        st.subheader("📅 Holiday Settings")
-        consider_holidays = st.checkbox(
-            "Consider Hebrew holidays and weekends?",
-            value=True,
-            help="Automatically exclude Hebrew holidays and weekends"
+            help="Automatically fill empty days with 0"
         )
     
     # Main content area
@@ -413,7 +396,7 @@ Object-Oriented Programming,Polymorphism,3
                                 # Calculate schedule
                                 schedule_df = calculate_schedule(
                                     syllabus_df, start_date, add_break, break_days, consider_holidays, 
-                                    handle_empty_days, default_days if handle_empty_days else 1
+                                    handle_empty_days
                                 )
                                 
                                 # Check if schedule was generated successfully
@@ -476,7 +459,7 @@ Object-Oriented Programming,Polymorphism,3
         • Use the sidebar to configure your schedule settings
         • Hebrew holidays are automatically excluded when enabled
         • Breaks can be added between main topics
-        • Empty values in 'Days' column are supported
+        • Empty values in 'Days' column are filled with 0
         """)
         
         # Show current date and time
