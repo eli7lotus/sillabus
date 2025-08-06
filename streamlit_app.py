@@ -605,7 +605,7 @@ def main():
     st.header("📊 Quick Stats")
     
     # Create landscape layout for stats
-    col_a, col_b, col_c, col_d = st.columns(4)
+    col_a, col_b, col_c = st.columns(3)
     
     if uploaded_file is None:
         with col_a:
@@ -614,8 +614,6 @@ def main():
             st.metric("📝 Total Subtopics", "0")
         with col_c:
             st.metric("⏱️ Total Days", "0")
-        with col_d:
-            st.metric("❓ Empty Values", "0")
     else:
         # These will be populated when file is uploaded
         pass
@@ -744,8 +742,7 @@ def main():
                         total_days = syllabus_df['Days'].sum(skipna=True)
                         st.metric("⏱️ Total Days", total_days)
                     
-                    with col_d:
-                        st.metric("❓ Empty Values", empty_days)
+
                     
                     # Generate schedule button
                     if st.button("✨ Generate Schedule", type="primary"):
