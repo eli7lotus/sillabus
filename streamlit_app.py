@@ -528,27 +528,27 @@ def main():
     
     # Info box with expandable instructions
     with st.container():
-        st.markdown("### 📋 Instructions")
-        st.markdown("""
-        **Required CSV Format:**
-        - Upload a CSV file with columns: **Main Topic**, **Subtopic**, **Days**
-        - Working days: Sunday - Thursday (Friday and Saturday are weekends)
-        - Empty values in 'Days' column are automatically filled with 0
-        - Hebrew holidays are automatically excluded when enabled
-        - Breaks can be added after each main topic completion
-        """)
+        with st.expander("📋 Instructions", expanded=False):
+            st.markdown("""
+            **Required CSV Format:**
+            - Upload a CSV file with columns: **Main Topic**, **Subtopic**, **Days**
+            - Working days: Sunday - Thursday (Friday and Saturday are weekends)
+            - Empty values in 'Days' column are automatically filled with 0
+            - Hebrew holidays are automatically excluded when enabled
+            - Breaks can be added after each main topic completion
+            """)
         
-        # Sample Format section
-        st.markdown("### 📄 Sample Format")
-        st.markdown("**Required Columns:**")
-        st.markdown("""
-        - **Main Topic**: The main subject or module name
-        - **Subtopic**: Specific topics within the main topic  
-        - **Days**: Number of working days needed for each subtopic
-        """)
-        
-        st.markdown("**Example CSV Content:**")
-        st.code("""
+        # Sample Format expander in instructions section
+        with st.expander("📄 Sample Format", expanded=False):
+            st.markdown("**Required Columns:**")
+            st.markdown("""
+            - **Main Topic**: The main subject or module name
+            - **Subtopic**: Specific topics within the main topic  
+            - **Days**: Number of working days needed for each subtopic
+            """)
+            
+            st.markdown("**Example CSV Content:**")
+            st.code("""
 Main Topic,Subtopic,Days
 Introduction to Programming,Basic Concepts,3
 Introduction to Programming,Variables and Data Types,2
@@ -556,47 +556,47 @@ Introduction to Programming,Control Structures,4
 Object-Oriented Programming,Classes and Objects,3
 Object-Oriented Programming,Inheritance,2
 Object-Oriented Programming,Polymorphism,3
-        """, language="csv")
-        
-        st.markdown("**💡 Tips:**")
-        st.markdown("""
-        - Empty values in 'Days' column are automatically filled with 0
-        - You can have multiple subtopics under the same main topic
-        - Working days exclude weekends (Friday/Saturday) and Hebrew holidays
-        - Breaks can be added automatically after each main topic
-        """)
-        
-        # Create sample data for download
-        sample_data = {
-            'Main Topic': [
-                'Introduction to Programming',
-                'Introduction to Programming', 
-                'Introduction to Programming',
-                'Object-Oriented Programming',
-                'Object-Oriented Programming',
-                'Object-Oriented Programming'
-            ],
-            'Subtopic': [
-                'Basic Concepts',
-                'Variables and Data Types',
-                'Control Structures', 
-                'Classes and Objects',
-                'Inheritance',
-                'Polymorphism'
-            ],
-            'Days': [3, 2, 4, 3, 2, 3]
-        }
-        sample_df = pd.DataFrame(sample_data)
-        
-        # Download button for sample
-        sample_csv = sample_df.to_csv(index=False)
-        st.download_button(
-            label="⬇️ Download Sample CSV",
-            data=sample_csv,
-            file_name="sample_syllabus.csv",
-            mime="text/csv",
-            type="primary"
-        )
+            """, language="csv")
+            
+            st.markdown("**💡 Tips:**")
+            st.markdown("""
+            - Empty values in 'Days' column are automatically filled with 0
+            - You can have multiple subtopics under the same main topic
+            - Working days exclude weekends (Friday/Saturday) and Hebrew holidays
+            - Breaks can be added automatically after each main topic
+            """)
+            
+            # Create sample data for download
+            sample_data = {
+                'Main Topic': [
+                    'Introduction to Programming',
+                    'Introduction to Programming', 
+                    'Introduction to Programming',
+                    'Object-Oriented Programming',
+                    'Object-Oriented Programming',
+                    'Object-Oriented Programming'
+                ],
+                'Subtopic': [
+                    'Basic Concepts',
+                    'Variables and Data Types',
+                    'Control Structures', 
+                    'Classes and Objects',
+                    'Inheritance',
+                    'Polymorphism'
+                ],
+                'Days': [3, 2, 4, 3, 2, 3]
+            }
+            sample_df = pd.DataFrame(sample_data)
+            
+            # Download button for sample
+            sample_csv = sample_df.to_csv(index=False)
+            st.download_button(
+                label="⬇️ Download Sample CSV",
+                data=sample_csv,
+                file_name="sample_syllabus.csv",
+                mime="text/csv",
+                type="primary"
+            )
     
     # File upload (moved before Quick Stats to avoid UnboundLocalError)
     uploaded_file = st.file_uploader(
