@@ -40,18 +40,18 @@ st.markdown("""
         padding: 2rem 0;
     }
 
-    /* Modern header with enhanced glassmorphism effect */
+    /* Modern header with clean and compact design */
     .main-header {
         background: var(--primary-gradient);
-        padding: 4rem 2rem;
-        border-radius: 24px;
+        padding: 2rem 2rem;
+        border-radius: 16px;
         color: white;
         text-align: center;
-        margin-bottom: 3rem;
-        box-shadow: var(--shadow-lg);
+        margin-bottom: 2rem;
+        box-shadow: var(--shadow);
         position: relative;
         overflow: hidden;
-        border: 1px solid rgba(255, 255, 255, 0.2);
+        border: 1px solid rgba(255, 255, 255, 0.1);
     }
 
     .main-header::before {
@@ -61,109 +61,54 @@ st.markdown("""
         left: 0;
         right: 0;
         bottom: 0;
-        background: rgba(255, 255, 255, 0.1);
-        backdrop-filter: blur(20px);
-        border-radius: 24px;
-    }
-
-    .main-header::after {
-        content: '';
-        position: absolute;
-        top: -50%;
-        left: -50%;
-        width: 200%;
-        height: 200%;
-        background: radial-gradient(circle, rgba(255, 255, 255, 0.1) 0%, transparent 70%);
-        animation: float 6s ease-in-out infinite;
-    }
-
-    @keyframes float {
-        0%, 100% { transform: translateY(0px) rotate(0deg); }
-        50% { transform: translateY(-20px) rotate(180deg); }
+        background: rgba(255, 255, 255, 0.05);
+        backdrop-filter: blur(10px);
+        border-radius: 16px;
     }
 
     .main-header h1 {
-        font-size: 4rem;
-        font-weight: 800;
-        margin-bottom: 1rem;
-        text-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+        font-size: 2.5rem;
+        font-weight: 600;
+        margin-bottom: 0.5rem;
+        text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
         position: relative;
         z-index: 2;
-        background: linear-gradient(45deg, #ffffff, #f0f0f0, #ffffff);
-        background-size: 200% 200%;
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-        background-clip: text;
-        animation: shimmer 3s ease-in-out infinite;
-        letter-spacing: -0.02em;
-    }
-
-    @keyframes shimmer {
-        0%, 100% { background-position: 0% 50%; }
-        50% { background-position: 100% 50%; }
+        letter-spacing: -0.01em;
     }
 
     .main-header p {
-        font-size: 1.4rem;
-        opacity: 0.95;
+        font-size: 1.1rem;
+        opacity: 0.9;
         position: relative;
         z-index: 2;
-        font-weight: 300;
-        letter-spacing: 0.02em;
-        text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        font-weight: 400;
+        letter-spacing: 0.01em;
         margin-bottom: 0;
-    }
-
-    /* Decorative elements for header */
-    .main-header .decoration {
-        position: absolute;
-        width: 100px;
-        height: 100px;
-        border: 2px solid rgba(255, 255, 255, 0.3);
-        border-radius: 50%;
-        z-index: 1;
-    }
-
-    .main-header .decoration:nth-child(1) {
-        top: 20px;
-        left: 20px;
-        animation: pulse 4s ease-in-out infinite;
-    }
-
-    .main-header .decoration:nth-child(2) {
-        bottom: 20px;
-        right: 20px;
-        animation: pulse 4s ease-in-out infinite 2s;
-    }
-
-    @keyframes pulse {
-        0%, 100% { transform: scale(1); opacity: 0.3; }
-        50% { transform: scale(1.2); opacity: 0.6; }
     }
 
     /* Responsive header */
     @media (max-width: 768px) {
         .main-header {
-            padding: 3rem 1.5rem;
-            border-radius: 20px;
+            padding: 1.5rem 1rem;
+            border-radius: 12px;
         }
         
-        .main-header h1 {
-            font-size: 2.5rem;
-        }
-        
-        .main-header p {
-            font-size: 1.1rem;
-        }
-    }
-
-    @media (max-width: 480px) {
         .main-header h1 {
             font-size: 2rem;
         }
         
         .main-header p {
             font-size: 1rem;
+        }
+    }
+
+    @media (max-width: 480px) {
+        .main-header h1 {
+            font-size: 1.8rem;
+        }
+        
+        .main-header p {
+            font-size: 0.9rem;
         }
     }
 
@@ -535,8 +480,6 @@ def main():
     # Header
     st.markdown("""
     <div class="main-header">
-        <div class="decoration"></div>
-        <div class="decoration"></div>
         <h1>📚 Syllabus Calculator</h1>
         <p>Generate course schedules with Hebrew calendar integration</p>
     </div>
