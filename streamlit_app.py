@@ -555,37 +555,10 @@ def main():
             sample_df = pd.DataFrame(sample_data)
             sample_csv = sample_df.to_csv(index=False)
             
-            # Sample Format as clickable link with download functionality
-            st.markdown("""
-            <style>
-            .sample-link {
-                color: #0066cc;
-                text-decoration: underline;
-                cursor: pointer;
-                font-weight: 500;
-                font-size: 1rem;
-            }
-            .sample-link:hover {
-                color: #004499;
-                text-decoration: underline;
-            }
-            </style>
-            """, unsafe_allow_html=True)
-            
-            # Create a download link using HTML
+            # Sample Format as expandable section with download functionality
             st.markdown(f"""
-            <a href="data:text/csv;charset=utf-8,{sample_csv}" 
-               download="sample_syllabus.csv" 
-               class="sample-link"
-               title="Click to download sample CSV file">
-            📄 Sample Format
-            </a>
-            """, unsafe_allow_html=True)
-            
-            # Add tooltip information
-            st.markdown("""
-            <details style="margin-top: 10px;">
-            <summary style="cursor: pointer; color: #666; font-size: 0.9rem;">ℹ️ Format details</summary>
+            <details style="margin-bottom: 10px;">
+            <summary style="cursor: pointer; color: #666; font-size: 0.9rem;">📄 Sample Format</summary>
             <div style="margin-left: 20px; margin-top: 10px; font-size: 0.9rem; color: #333;">
             <strong>Required Columns:</strong><br>
             • <strong>Main Topic:</strong> The main subject or module name<br>
@@ -605,7 +578,13 @@ def main():
             • Empty values in 'Days' column are automatically filled with 0<br>
             • You can have multiple subtopics under the same main topic<br>
             • Working days exclude weekends (Friday/Saturday) and Hebrew holidays<br>
-            • Breaks can be added automatically after each main topic
+            • Breaks can be added automatically after each main topic<br><br>
+            
+            <a href="data:text/csv;charset=utf-8,{sample_csv}" 
+               download="sample_syllabus.csv" 
+               style="color: #0066cc; text-decoration: underline; cursor: pointer; font-weight: 500;">
+            ⬇️ Download Sample CSV Template
+            </a>
             </div>
             </details>
             """, unsafe_allow_html=True)
