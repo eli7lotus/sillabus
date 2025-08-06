@@ -528,7 +528,7 @@ def main():
     
     # Info box with expandable instructions
     with st.container():
-        with st.expander("📋 Instructions", expanded=False):
+        with st.expander("Instructions", expanded=False):
             st.markdown("""
             **Required CSV Format:**
             - Upload a CSV file with columns: **Main Topic**, **Subtopic**, **Days**
@@ -539,7 +539,7 @@ def main():
             """)
         
         # Sample Format expander in instructions section
-        with st.expander("📝 Sample Format", expanded=False):
+        with st.expander("Sample Format", expanded=False):
             st.markdown("### Required Columns:")
             st.markdown("""
             - **Main Topic**: The main subject or module name
