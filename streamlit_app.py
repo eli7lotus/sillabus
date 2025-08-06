@@ -665,15 +665,7 @@ def main():
                 )
                 single_dates.append(single_date)
         
-        # Regenerate Schedule button at the bottom of sidebar
-        st.markdown("---")  # Separator
-        if st.button("🔄 Regenerate Schedule", type="primary", use_container_width=True):
-            # Force regeneration by clearing the schedule and setting flag
-            if 'schedule_df' in st.session_state:
-                del st.session_state.schedule_df
-            if 'params_hash' in st.session_state:
-                del st.session_state.params_hash
-            st.session_state.regenerate_schedule = True
+
     
     # Main content area
     with st.container():
@@ -724,8 +716,7 @@ def main():
                     # Check if we need to regenerate schedule
                     regenerate_needed = (
                         uploaded_file is not None and 
-                        (st.session_state.get('regenerate_schedule', False) or 
-                         'schedule_df' not in st.session_state or
+                        ('schedule_df' not in st.session_state or
                          st.session_state.get('params_hash') != current_params_hash)
                     )
                     
@@ -761,7 +752,6 @@ def main():
                                 else:
                                     # Save schedule and parameters to session state
                                     st.session_state.schedule_df = schedule_df
-                                    st.session_state.regenerate_schedule = False
                                     st.session_state.params_hash = current_params_hash
                                     
                                     # Display results
