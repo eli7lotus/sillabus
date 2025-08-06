@@ -484,64 +484,78 @@ def calculate_schedule(syllabus_df, start_date, add_break, break_days, consider_
     schedule_data = []
     current_date = start_date
     
-    # Group by Main Topic
-    for main_topic, group in syllabus_df.groupby('Main Topic'):
-        topic_start_date = None
+    # Process rows in original order from CSV file
+    for index, row in syllabus_df.iterrows():
+        main_topic = row['Main Topic']
+        subtopic = row['Subtopic']
         
-        for _, row in group.iterrows():
-            subtopic = row['Subtopic']
-            # Handle NaN values and convert to integer
-            days_value = row['Days']
-            if pd.isna(days_value):
-                st.error(f"❌ Invalid value in 'Days' column for subtopic '{subtopic}'. Please ensure all days values are numbers.")
-                return pd.DataFrame()
-            days_needed = int(days_value)
-            
-            # Find the next working day to start
-            if topic_start_date is None:
-                current_date = get_next_working_day(current_date, holidays)
-                topic_start_date = current_date
-            
-            start_date_for_subtopic = current_date
-            days_allocated = 0
-            end_date = start_date_for_subtopic
-            
-            # Allocate working days for this subtopic
-            while days_allocated < days_needed:
-                if is_working_day(current_date, holidays):
-                    days_allocated += 1
-                end_date = current_date
-                current_date += timedelta(days=1)
-            
-            schedule_data.append({
-                'Main Topic': main_topic,
-                'Subtopic': subtopic,
-                'Start Date': start_date_for_subtopic.strftime('%Y-%m-%d'),
-                'End Date': end_date.strftime('%Y-%m-%d'),
-                'Duration (Days)': days_needed
-            })
+        # Check if this is a new main topic (first occurrence)
+        is_new_main_topic = True
+        for prev_row in schedule_data:
+            if prev_row['Main Topic'] == main_topic:
+                is_new_main_topic = False
+                break
         
-        # Add break after each main topic if enabled
-        if add_break and break_days > 0:
+        # Handle NaN values and convert to integer
+        days_value = row['Days']
+        if pd.isna(days_value):
+            st.error(f"❌ Invalid value in 'Days' column for subtopic '{subtopic}'. Please ensure all days values are numbers.")
+            return pd.DataFrame()
+        days_needed = int(days_value)
+        
+        # Find the next working day to start
+        if is_new_main_topic:
             current_date = get_next_working_day(current_date, holidays)
-            break_start = current_date
+            topic_start_date = current_date
+        
+        start_date_for_subtopic = current_date
+        days_allocated = 0
+        end_date = start_date_for_subtopic
+        
+        # Allocate working days for this subtopic
+        while days_allocated < days_needed:
+            if is_working_day(current_date, holidays):
+                days_allocated += 1
+            end_date = current_date
+            current_date += timedelta(days=1)
+        
+        schedule_data.append({
+            'Main Topic': main_topic,
+            'Subtopic': subtopic,
+            'Start Date': start_date_for_subtopic.strftime('%Y-%m-%d'),
+            'End Date': end_date.strftime('%Y-%m-%d'),
+            'Duration (Days)': days_needed
+        })
+        
+        # Add break after each main topic if enabled (only after the last subtopic of the topic)
+        if add_break and break_days > 0:
+            # Check if this is the last subtopic of the current main topic
+            is_last_subtopic = True
+            for next_index in range(index + 1, len(syllabus_df)):
+                if syllabus_df.iloc[next_index]['Main Topic'] == main_topic:
+                    is_last_subtopic = False
+                    break
             
-            # Skip break_days working days
-            break_days_allocated = 0
-            while break_days_allocated < break_days:
-                if is_working_day(current_date, holidays):
-                    break_days_allocated += 1
-                current_date += timedelta(days=1)
-            
-            break_end = current_date - timedelta(days=1)
-            
-            schedule_data.append({
-                'Main Topic': f"{main_topic} - Break",
-                'Subtopic': 'Break Period',
-                'Start Date': break_start.strftime('%Y-%m-%d'),
-                'End Date': break_end.strftime('%Y-%m-%d'),
-                'Duration (Days)': break_days
-            })
+            if is_last_subtopic:
+                current_date = get_next_working_day(current_date, holidays)
+                break_start = current_date
+                
+                # Skip break_days working days
+                break_days_allocated = 0
+                while break_days_allocated < break_days:
+                    if is_working_day(current_date, holidays):
+                        break_days_allocated += 1
+                    current_date += timedelta(days=1)
+                
+                break_end = current_date - timedelta(days=1)
+                
+                schedule_data.append({
+                    'Main Topic': f"{main_topic} - Break",
+                    'Subtopic': 'Break Period',
+                    'Start Date': break_start.strftime('%Y-%m-%d'),
+                    'End Date': break_end.strftime('%Y-%m-%d'),
+                    'Duration (Days)': break_days
+                })
     
     return pd.DataFrame(schedule_data)
 
