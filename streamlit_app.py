@@ -528,10 +528,10 @@ def main():
     
     # Info box with compact instructions
     with st.container():
-        # Instructions section with small arrow button
+        # Instructions section with simple arrow button
         col1, col2 = st.columns([1, 30])
         with col1:
-            if st.button("▶️" if not st.session_state.get('instructions_visible', False) else "🔽", key="instructions_btn", help="Toggle Instructions"):
+            if st.button("▶" if not st.session_state.get('instructions_visible', False) else "▼", key="instructions_btn", help="Toggle Instructions"):
                 st.session_state['instructions_visible'] = not st.session_state.get('instructions_visible', False)
         with col2:
             st.markdown("**📋 Instructions**")
@@ -546,10 +546,10 @@ def main():
             - Breaks can be added after each main topic completion
             """)
         
-        # Sample Format section with small arrow button
+        # Sample Format section with simple arrow button
         col3, col4 = st.columns([1, 30])
         with col3:
-            if st.button("▶️" if not st.session_state.get('sample_visible', False) else "🔽", key="sample_btn", help="Toggle Sample Format"):
+            if st.button("▶" if not st.session_state.get('sample_visible', False) else "▼", key="sample_btn", help="Toggle Sample Format"):
                 st.session_state['sample_visible'] = not st.session_state.get('sample_visible', False)
         with col4:
             st.markdown("**📄 Sample Format**")
