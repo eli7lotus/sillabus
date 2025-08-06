@@ -637,10 +637,15 @@ def main():
                     help=f"Select free date {i+1}"
                 )
                 single_dates.append(single_date)
+        
+        # Regenerate Schedule button at the bottom of sidebar
+        st.markdown("---")  # Separator
+        if st.button("🔄 Regenerate Schedule", type="primary", use_container_width=True):
+            st.rerun()
     
     # Main content area
     with st.container():
-        st.header("📊 Syllabus Preview")
+        st.header("📊 Course Schedule")
         
         if uploaded_file is not None:
             try:
@@ -658,7 +663,7 @@ def main():
                     st.success("✅ CSV file loaded successfully!")
                     
                     # Display preview
-                    st.subheader("📋 Syllabus Structure")
+                    st.subheader("📅 Schedule with Predefined Parameters")
                     st.dataframe(syllabus_df, use_container_width=True)
                     
                     # Check for empty values and show info
