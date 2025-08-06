@@ -209,20 +209,17 @@ def main():
     </div>
     """, unsafe_allow_html=True)
     
-    # Info box
+    # Info box with expandable instructions
     with st.container():
-        st.markdown("""
-        <div class="info-box">
-            <h4>📋 Instructions</h4>
-            <ul>
-                <li>Upload a CSV file with columns: <strong>Main Topic</strong>, <strong>Subtopic</strong>, <strong>Days</strong></li>
-                <li>Working days: Sunday - Thursday (Friday and Saturday are weekends)</li>
-                <li>Empty values in 'Days' column can be handled automatically</li>
-                <li>Hebrew holidays are automatically excluded when enabled</li>
-                <li>Breaks can be added after each main topic completion</li>
-            </ul>
-        </div>
-        """, unsafe_allow_html=True)
+        with st.expander("📋 Instructions", expanded=True):
+            st.markdown("""
+            **Required CSV Format:**
+            - Upload a CSV file with columns: **Main Topic**, **Subtopic**, **Days**
+            - Working days: Sunday - Thursday (Friday and Saturday are weekends)
+            - Empty values in 'Days' column are automatically filled with 0
+            - Hebrew holidays are automatically excluded when enabled
+            - Breaks can be added after each main topic completion
+            """)
         
         # Sample Format expander in instructions section
         with st.expander("📝 Sample Format", expanded=False):
