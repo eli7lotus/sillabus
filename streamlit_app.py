@@ -526,48 +526,52 @@ def main():
     </div>
     """, unsafe_allow_html=True)
     
-    # Info box with tooltip instructions in one row
+    # Info box with improved UI/UX layout
     with st.container():
-        # Create one row with all elements
-        col1, col2, col3, col4 = st.columns(4)
+        # Create two main sections: Info (50%) and Upload (50%)
+        info_col, upload_col = st.columns(2)
         
-        with col1:
-            # Instructions section with tooltip
-            st.markdown("**📋 Instructions**", help="""
-            **Required CSV Format:**
-            - Upload a CSV file with columns: **Main Topic**, **Subtopic**, **Days**
-            - Working days: Sunday - Thursday (Friday and Saturday are weekends)
-            - Empty values in 'Days' column are automatically filled with 0
-            - Hebrew holidays are automatically excluded when enabled
-            - Breaks can be added after each main topic completion
-            """)
-        
-        with col2:
-            # Sample Format section with tooltip
-            st.markdown("**📄 Sample Format**", help="""
-            **Required Columns:**
-            - **Main Topic**: The main subject or module name
-            - **Subtopic**: Specific topics within the main topic  
-            - **Days**: Number of working days needed for each subtopic
+        with info_col:
+            st.markdown("### 📚 Getting Started")
             
-            **Example CSV Content:**
-            Main Topic,Subtopic,Days
-            Introduction to Programming,Basic Concepts,3
-            Introduction to Programming,Variables and Data Types,2
-            Introduction to Programming,Control Structures,4
-            Object-Oriented Programming,Classes and Objects,3
-            Object-Oriented Programming,Inheritance,2
-            Object-Oriented Programming,Polymorphism,3
+            # Instructions and Sample Format in a compact layout
+            col_info1, col_info2 = st.columns(2)
             
-            **💡 Tips:**
-            - Empty values in 'Days' column are automatically filled with 0
-            - You can have multiple subtopics under the same main topic
-            - Working days exclude weekends (Friday/Saturday) and Hebrew holidays
-            - Breaks can be added automatically after each main topic
-            """)
-        
-        with col3:
-            # Create sample data for download
+            with col_info1:
+                st.markdown("**📋 Instructions**", help="""
+                **Required CSV Format:**
+                - Upload a CSV file with columns: **Main Topic**, **Subtopic**, **Days**
+                - Working days: Sunday - Thursday (Friday and Saturday are weekends)
+                - Empty values in 'Days' column are automatically filled with 0
+                - Hebrew holidays are automatically excluded when enabled
+                - Breaks can be added after each main topic completion
+                """)
+            
+            with col_info2:
+                st.markdown("**📄 Sample Format**", help="""
+                **Required Columns:**
+                - **Main Topic**: The main subject or module name
+                - **Subtopic**: Specific topics within the main topic  
+                - **Days**: Number of working days needed for each subtopic
+                
+                **Example CSV Content:**
+                Main Topic,Subtopic,Days
+                Introduction to Programming,Basic Concepts,3
+                Introduction to Programming,Variables and Data Types,2
+                Introduction to Programming,Control Structures,4
+                Object-Oriented Programming,Classes and Objects,3
+                Object-Oriented Programming,Inheritance,2
+                Object-Oriented Programming,Polymorphism,3
+                
+                **💡 Tips:**
+                - Empty values in 'Days' column are automatically filled with 0
+                - You can have multiple subtopics under the same main topic
+                - Working days exclude weekends (Friday/Saturday) and Hebrew holidays
+                - Breaks can be added automatically after each main topic
+                """)
+            
+            # Download sample button with better styling
+            st.markdown("**📥 Get Started:**")
             sample_data = {
                 'Main Topic': [
                     'Introduction to Programming',
@@ -588,24 +592,32 @@ def main():
                 'Days': [3, 2, 4, 3, 2, 3]
             }
             sample_df = pd.DataFrame(sample_data)
-            
-            # Download button for sample
             sample_csv = sample_df.to_csv(index=False)
+            
             st.download_button(
-                label="⬇️ Download Sample CSV",
+                label="⬇️ Download Sample CSV Template",
                 data=sample_csv,
                 file_name="sample_syllabus.csv",
                 mime="text/csv",
-                type="primary"
+                type="primary",
+                help="Download a sample CSV file to get started"
             )
         
-        with col4:
-            # File upload
+        with upload_col:
+            st.markdown("### 📁 Upload Your Syllabus")
+            
+            # File upload with better styling and instructions
             uploaded_file = st.file_uploader(
-                "📁 Upload Syllabus CSV File",
+                "Choose your CSV file",
                 type=['csv'],
-                help="Upload a CSV file with Main Topic, Subtopic, and Days columns"
+                help="Upload a CSV file with Main Topic, Subtopic, and Days columns. You can download a sample template from the left section.",
+                label_visibility="collapsed"
             )
+            
+            if uploaded_file is not None:
+                st.success(f"✅ File uploaded: **{uploaded_file.name}**")
+            else:
+                st.info("💡 **Tip:** Upload your syllabus CSV file to get started. Use the sample template if you need help with the format.")
     
     # Quick Stats section - landscape below instructions
     st.header("📊 Quick Stats")
