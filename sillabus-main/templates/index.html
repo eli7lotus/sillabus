@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Syllabus Calculator</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            font-weight: 300;
+        }
+
+        .header p {
+            font-size: 1.1em;
+            opacity: 0.9;
+        }
+
+        .content {
+            padding: 40px;
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #333;
+            font-size: 1.1em;
+        }
+
+        .form-group input[type="file"],
+        .form-group input[type="date"],
+        .form-group input[type="number"] {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #e1e5e9;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: border-color 0.3s ease;
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: #4facfe;
+        }
+
+        .checkbox-group {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+
+        .checkbox-group input[type="checkbox"] {
+            width: 20px;
+            height: 20px;
+            accent-color: #4facfe;
+        }
+
+        .checkbox-group label {
+            margin-bottom: 0;
+            cursor: pointer;
+        }
+
+        .break-options {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 8px;
+            margin-top: 15px;
+            border-left: 4px solid #4facfe;
+        }
+
+        .submit-btn {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 8px;
+            font-size: 1.1em;
+            font-weight: 600;
+            cursor: pointer;
+            width: 100%;
+            transition: transform 0.2s ease;
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-2px);
+        }
+
+        .submit-btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .alert {
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            display: none;
+        }
+
+        .alert-success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+
+        .alert-error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+
+        .download-btn {
+            background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 6px;
+            font-size: 1em;
+            font-weight: 600;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-block;
+            margin-top: 10px;
+            transition: transform 0.2s ease;
+        }
+
+        .download-btn:hover {
+            transform: translateY(-1px);
+        }
+
+        .loading {
+            display: none;
+            text-align: center;
+            padding: 20px;
+        }
+
+        .spinner {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #4facfe;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 15px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .info-box {
+            background: #e3f2fd;
+            border: 1px solid #bbdefb;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 30px;
+        }
+
+        .info-box h3 {
+            color: #1976d2;
+            margin-bottom: 10px;
+        }
+
+        .info-box ul {
+            margin-left: 20px;
+            color: #424242;
+        }
+
+        .info-box li {
+            margin-bottom: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>📚 Syllabus Calculator</h1>
+            <p>Generate course schedules with Hebrew calendar integration</p>
+        </div>
+
+        <div class="content">
+            <div class="info-box">
+                <h3>📋 Instructions</h3>
+                <ul>
+                    <li>Upload a CSV file with columns: <strong>Main Topic</strong>, <strong>Subtopic</strong>, <strong>Days</strong></li>
+                    <li>Working days: Sunday - Thursday (Friday and Saturday are weekends)</li>
+                    <li>Empty values in 'Days' column can be handled automatically</li>
+                    <li>Hebrew holidays are automatically excluded when enabled</li>
+                    <li>Breaks can be added after each main topic completion</li>
+                </ul>
+            </div>
+
+            <form id="syllabusForm">
+                <div class="form-group">
+                    <label for="csvFile">📁 Upload Syllabus CSV File:</label>
+                    <input type="file" id="csvFile" name="file" accept=".csv" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="startDate">📅 Course Start Date:</label>
+                    <input type="date" id="startDate" name="start_date" required>
+                </div>
+
+                <div class="checkbox-group">
+                    <input type="checkbox" id="addBreak" name="add_break">
+                    <label for="addBreak">Add break after each main topic?</label>
+                </div>
+
+                <div class="break-options" id="breakOptions" style="display: none;">
+                    <div class="form-group">
+                        <label for="breakDays">⏰ Break Duration (working days):</label>
+                        <input type="number" id="breakDays" name="break_days" min="1" max="30" value="2">
+                    </div>
+                </div>
+
+                <div class="checkbox-group">
+                    <input type="checkbox" id="handleEmptyDays" name="handle_empty_days" checked>
+                    <label for="handleEmptyDays">Handle empty values in 'Days' column?</label>
+                </div>
+
+                <div class="break-options" id="emptyDaysOptions" style="display: none;">
+                    <div class="form-group">
+                        <label for="defaultDays">Default days for empty values:</label>
+                        <input type="number" id="defaultDays" name="default_days" min="1" max="30" value="1">
+                    </div>
+                </div>
+
+                <div class="checkbox-group">
+                    <input type="checkbox" id="considerHolidays" name="consider_holidays" checked>
+                    <label for="considerHolidays">Consider Hebrew holidays and weekends?</label>
+                </div>
+
+                <button type="submit" class="submit-btn" id="submitBtn">
+                    🚀 Generate Schedule
+                </button>
+            </form>
+
+            <div class="alert" id="alert"></div>
+
+            <div class="loading" id="loading">
+                <div class="spinner"></div>
+                <p>Generating your course schedule...</p>
+            </div>
+
+            <div id="downloadSection" style="display: none;">
+                <div class="alert alert-success">
+                    ✅ Schedule generated successfully! Click the button below to download.
+                </div>
+                <a href="#" class="download-btn" id="downloadBtn">
+                    📥 Download course_schedule.csv
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Set default date to today
+        document.getElementById('startDate').value = new Date().toISOString().split('T')[0];
+
+        // Show/hide break options
+        document.getElementById('addBreak').addEventListener('change', function() {
+            const breakOptions = document.getElementById('breakOptions');
+            breakOptions.style.display = this.checked ? 'block' : 'none';
+        });
+
+        // Show/hide empty days options
+        document.getElementById('handleEmptyDays').addEventListener('change', function() {
+            const emptyDaysOptions = document.getElementById('emptyDaysOptions');
+            emptyDaysOptions.style.display = this.checked ? 'block' : 'none';
+        });
+
+        // Form submission
+        document.getElementById('syllabusForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const formData = new FormData();
+            const fileInput = document.getElementById('csvFile');
+            const startDate = document.getElementById('startDate').value;
+            const addBreak = document.getElementById('addBreak').checked;
+            const breakDays = document.getElementById('breakDays').value;
+            const handleEmptyDays = document.getElementById('handleEmptyDays').checked;
+            const defaultDays = document.getElementById('defaultDays').value;
+            const considerHolidays = document.getElementById('considerHolidays').checked;
+
+            if (!fileInput.files[0]) {
+                showAlert('Please select a CSV file', 'error');
+                return;
+            }
+
+            if (!startDate) {
+                showAlert('Please select a start date', 'error');
+                return;
+            }
+
+            formData.append('file', fileInput.files[0]);
+            formData.append('start_date', startDate);
+            formData.append('add_break', addBreak);
+            formData.append('break_days', breakDays);
+            formData.append('handle_empty_days', handleEmptyDays);
+            formData.append('default_days', defaultDays);
+            formData.append('consider_holidays', considerHolidays);
+
+            // Show loading
+            document.getElementById('loading').style.display = 'block';
+            document.getElementById('submitBtn').disabled = true;
+            hideAlert();
+            document.getElementById('downloadSection').style.display = 'none';
+
+            try {
+                const response = await fetch('/upload', {
+                    method: 'POST',
+                    body: formData
+                });
+
+                const result = await response.json();
+
+                if (response.ok) {
+                    // Set download link
+                    const downloadBtn = document.getElementById('downloadBtn');
+                    downloadBtn.href = `/download/${encodeURIComponent(result.file_path)}`;
+                    
+                    // Show download section
+                    document.getElementById('downloadSection').style.display = 'block';
+                    showAlert('Schedule generated successfully!', 'success');
+                } else {
+                    showAlert(result.error || 'An error occurred', 'error');
+                }
+            } catch (error) {
+                showAlert('Network error. Please try again.', 'error');
+            } finally {
+                document.getElementById('loading').style.display = 'none';
+                document.getElementById('submitBtn').disabled = false;
+            }
+        });
+
+        function showAlert(message, type) {
+            const alert = document.getElementById('alert');
+            alert.textContent = message;
+            alert.className = `alert alert-${type}`;
+            alert.style.display = 'block';
+        }
+
+        function hideAlert() {
+            document.getElementById('alert').style.display = 'none';
+        }
+    </script>
+</body>
+</html> 
