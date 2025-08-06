@@ -22,8 +22,8 @@ st.markdown("""
 <style>
     /* Modern color palette and variables */
     :root {
-        --primary-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-        --secondary-gradient: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+        --primary-gradient: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
+        --secondary-gradient: linear-gradient(135deg, #60a5fa 0%, #3b82f6 100%);
         --accent-gradient: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
         --success-gradient: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
         --warning-gradient: linear-gradient(135deg, #fa709a 0%, #fee140 100%);
@@ -76,12 +76,14 @@ st.markdown("""
     .main-header h1 {
         font-size: 1.5rem;
         font-weight: 700;
-        margin-bottom: 0.25rem;
+        margin-bottom: 0;
         text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
         position: relative;
         z-index: 2;
         letter-spacing: -0.01em;
         font-family: 'Roboto', sans-serif;
+        display: inline-block;
+        margin-right: 0.5rem;
     }
 
     .main-header p {
@@ -95,6 +97,8 @@ st.markdown("""
         text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
         color: #ffffff;
         font-family: 'Roboto', sans-serif;
+        display: inline-block;
+        vertical-align: middle;
     }
 
     /* Responsive header */
@@ -323,12 +327,31 @@ st.markdown("""
 
     /* Responsive design */
     @media (max-width: 768px) {
+        .main-header {
+            padding: 0.6rem 1rem;
+            border-radius: 12px;
+        }
+        
         .main-header h1 {
-            font-size: 2rem;
+            font-size: 1.3rem;
+            display: block;
+            margin-right: 0;
+            margin-bottom: 0.25rem;
         }
         
         .main-header p {
-            font-size: 1rem;
+            font-size: 0.75rem;
+            display: block;
+        }
+    }
+
+    @media (max-width: 480px) {
+        .main-header h1 {
+            font-size: 1.1rem;
+        }
+        
+        .main-header p {
+            font-size: 0.7rem;
         }
     }
 </style>
@@ -490,8 +513,7 @@ def main():
     # Header
     st.markdown("""
     <div class="main-header">
-        <h1>📚 Syllabus Calculator</h1>
-        <p>Generate course schedules with Hebrew calendar integration</p>
+        <h1>📚 Syllabus Calculator</h1><p>Generate course schedules with Hebrew calendar integration</p>
     </div>
     """, unsafe_allow_html=True)
     
