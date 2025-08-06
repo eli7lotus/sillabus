@@ -528,9 +528,16 @@ def main():
     
     # Info box with compact instructions
     with st.container():
-        # Instructions section with toggle
-        instructions_visible = st.checkbox("📋 Show Instructions", value=False)
-        if instructions_visible:
+        # Instructions section with arrow button
+        col1, col2 = st.columns([1, 20])
+        with col1:
+            instructions_visible = st.button("▶️" if not 'instructions_visible' in st.session_state else "🔽", key="instructions_btn")
+        with col2:
+            st.markdown("**📋 Instructions**")
+        
+        if instructions_visible or st.session_state.get('instructions_visible', False):
+            if instructions_visible:
+                st.session_state['instructions_visible'] = True
             st.markdown("""
             **Required CSV Format:**
             - Upload a CSV file with columns: **Main Topic**, **Subtopic**, **Days**
@@ -540,9 +547,16 @@ def main():
             - Breaks can be added after each main topic completion
             """)
         
-        # Sample Format section with toggle
-        sample_visible = st.checkbox("📄 Show Sample Format", value=False)
-        if sample_visible:
+        # Sample Format section with arrow button
+        col3, col4 = st.columns([1, 20])
+        with col3:
+            sample_visible = st.button("▶️" if not 'sample_visible' in st.session_state else "🔽", key="sample_btn")
+        with col4:
+            st.markdown("**📄 Sample Format**")
+        
+        if sample_visible or st.session_state.get('sample_visible', False):
+            if sample_visible:
+                st.session_state['sample_visible'] = True
             st.markdown("**Required Columns:**")
             st.markdown("""
             - **Main Topic**: The main subject or module name
