@@ -522,13 +522,13 @@ def main():
     # Header
     st.markdown("""
     <div class="main-header">
-        <h1>Syllabus Calculator. <small>Generate course schedules with Hebrew calendar integration</small></h1>
+        <h1>📋 Syllabus Calculator. <small>Generate course schedules with Hebrew calendar integration</small></h1>
     </div>
     """, unsafe_allow_html=True)
     
     # Info box with expandable instructions
     with st.container():
-        with st.expander("📋 Instructions", expanded=False):
+        with st.expander("📖 Instructions", expanded=False):
             st.markdown("""
             **Required CSV Format:**
             - Upload a CSV file with columns: **Main Topic**, **Subtopic**, **Days**
@@ -539,7 +539,7 @@ def main():
             """)
         
         # Sample Format expander in instructions section
-        with st.expander("📝 Sample Format", expanded=False):
+        with st.expander("📄 Sample Format", expanded=False):
             st.markdown("### Required Columns:")
             st.markdown("""
             - **Main Topic**: The main subject or module name
@@ -591,7 +591,7 @@ Object-Oriented Programming,Polymorphism,3
             # Download button for sample
             sample_csv = sample_df.to_csv(index=False)
             st.download_button(
-                label="📥 Download Sample CSV",
+                label="⬇️ Download Sample CSV",
                 data=sample_csv,
                 file_name="sample_syllabus.csv",
                 mime="text/csv",
@@ -613,13 +613,13 @@ Object-Oriented Programming,Polymorphism,3
     
     if uploaded_file is None:
         with col_a:
-            st.metric("Main Topics", "0")
+            st.metric("📚 Main Topics", "0")
         with col_b:
-            st.metric("Total Subtopics", "0")
+            st.metric("📝 Total Subtopics", "0")
         with col_c:
-            st.metric("Total Days", "0")
+            st.metric("⏱️ Total Days", "0")
         with col_d:
-            st.metric("Empty Values", "0")
+            st.metric("❓ Empty Values", "0")
     else:
         # These will be populated when file is uploaded
         pass
@@ -636,7 +636,7 @@ Object-Oriented Programming,Polymorphism,3
         )
         
         # Break settings
-        st.subheader("🔄 Break Settings")
+        st.subheader("⏸️ Break Settings")
         add_break = st.checkbox(
             "Add break after each main topic?",
             help="Enable to add breaks after completing each main topic"
@@ -651,7 +651,7 @@ Object-Oriented Programming,Polymorphism,3
         )
         
         # Holiday settings
-        st.subheader("📅 Holiday Settings")
+        st.subheader("🎉 Holiday Settings")
         consider_holidays = st.checkbox(
             "Consider Hebrew holidays and weekends?",
             value=True,
@@ -738,21 +738,21 @@ Object-Oriented Programming,Polymorphism,3
                     
                     # Update Quick Stats with actual data
                     with col_a:
-                        st.metric("Main Topics", len(syllabus_df['Main Topic'].unique()))
+                        st.metric("📚 Main Topics", len(syllabus_df['Main Topic'].unique()))
                     
                     with col_b:
-                        st.metric("Total Subtopics", len(syllabus_df))
+                        st.metric("📝 Total Subtopics", len(syllabus_df))
                     
                     with col_c:
                         # Calculate total days excluding NaN values
                         total_days = syllabus_df['Days'].sum(skipna=True)
-                        st.metric("Total Days", total_days)
+                        st.metric("⏱️ Total Days", total_days)
                     
                     with col_d:
-                        st.metric("Empty Values", empty_days)
+                        st.metric("❓ Empty Values", empty_days)
                     
                     # Generate schedule button
-                    if st.button("🚀 Generate Schedule", type="primary"):
+                    if st.button("✨ Generate Schedule", type="primary"):
                         with st.spinner("Generating your course schedule..."):
                             try:
                                 # Prepare additional free days
@@ -783,14 +783,14 @@ Object-Oriented Programming,Polymorphism,3
                                     return
                                 
                                 # Display results
-                                st.success("✅ Schedule generated successfully!")
+                                st.success("🎉 Schedule generated successfully!")
                                 
                                 # Show additional free days info
                                 if additional_free_days:
                                     st.info(f"🏖️ Excluded {len(additional_free_days)} additional free day(s) from the schedule")
                                 
                                 # Show schedule
-                                st.subheader("📅 Generated Schedule")
+                                st.subheader("📋 Generated Schedule")
                                 st.dataframe(schedule_df, use_container_width=True)
                                 
                                 # Download button
@@ -799,7 +799,7 @@ Object-Oriented Programming,Polymorphism,3
                                 csv_str = csv_buffer.getvalue()
                                 
                                 st.download_button(
-                                    label="📥 Download course_schedule.csv",
+                                    label="⬇️ Download course_schedule.csv",
                                     data=csv_str,
                                     file_name="course_schedule.csv",
                                     mime="text/csv",
@@ -807,33 +807,33 @@ Object-Oriented Programming,Polymorphism,3
                                 )
                                 
                                 # Schedule summary
-                                st.subheader("📊 Schedule Summary")
+                                st.subheader("📈 Schedule Summary")
                                 col_x, col_y, col_z = st.columns(3)
                                 
                                 with col_x:
-                                    st.metric("Total Schedule Items", len(schedule_df))
+                                    st.metric("📋 Total Schedule Items", len(schedule_df))
                                 
                                 with col_y:
                                     start_date_schedule = datetime.strptime(schedule_df.iloc[0]['Start Date'], '%Y-%m-%d').date()
                                     end_date_schedule = datetime.strptime(schedule_df.iloc[-1]['End Date'], '%Y-%m-%d').date()
                                     total_days = (end_date_schedule - start_date_schedule).days + 1
-                                    st.metric("Total Calendar Days", total_days)
+                                    st.metric("📅 Total Calendar Days", total_days)
                                 
                                 with col_z:
                                     working_days = schedule_df[~schedule_df['Main Topic'].str.contains('Break')]['Duration (Days)'].sum()
-                                    st.metric("Total Working Days", working_days)
+                                    st.metric("⏱️ Total Working Days", working_days)
                                 
                             except Exception as e:
-                                st.error(f"❌ Error generating schedule: {str(e)}")
+                                st.error(f"⚠️ Error generating schedule: {str(e)}")
                 
             except Exception as e:
-                st.error(f"❌ Error reading CSV file: {str(e)}")
+                st.error(f"⚠️ Error reading CSV file: {str(e)}")
                 st.info("Please ensure your file is a valid CSV format")
         else:
-            st.info("👆 Please upload a CSV file to get started")
+            st.info("📁 Please upload a CSV file to get started")
     
     with col2:
-        st.header("📊 Additional Info")
+        st.header("ℹ️ Additional Info")
         st.info("""
         **💡 Quick Tips:**
         
@@ -845,7 +845,7 @@ Object-Oriented Programming,Polymorphism,3
         """)
         
         # Show current date and time
-        st.subheader("🕐 Current Time")
+        st.subheader("🕒 Current Time")
         current_time = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
         st.write(f"**Date:** {current_time}")
         
