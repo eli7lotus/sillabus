@@ -555,36 +555,7 @@ def main():
             sample_df = pd.DataFrame(sample_data)
             sample_csv = sample_df.to_csv(index=False)
             
-            # Sample Format as expandable section with download functionality
-            st.markdown("""
-            <details style="margin-bottom: 10px;">
-            <summary style="cursor: pointer; color: #666; font-size: 0.9rem;">📄 Sample Format</summary>
-            <div style="margin-left: 20px; margin-top: 10px; font-size: 0.9rem; color: #333;">
-            <strong>Required Columns:</strong><br>
-            • <strong>Main Topic:</strong> The main subject or module name<br>
-            • <strong>Subtopic:</strong> Specific topics within the main topic<br>
-            • <strong>Days:</strong> Number of working days needed for each subtopic<br><br>
-            
-            <strong>Example CSV Content:</strong><br>
-            <div style="background-color: #f5f5f5; padding: 10px; border-radius: 5px; font-size: 0.8rem; font-family: monospace; white-space: pre-wrap;">
-Main Topic,Subtopic,Days
-Introduction to Programming,Basic Concepts,3
-Introduction to Programming,Variables and Data Types,2
-Introduction to Programming,Control Structures,4
-Object-Oriented Programming,Classes and Objects,3
-Object-Oriented Programming,Inheritance,2
-Object-Oriented Programming,Polymorphism,3</div><br>
-            
-            <strong>💡 Tips:</strong><br>
-            • Empty values in 'Days' column are automatically filled with 0<br>
-            • You can have multiple subtopics under the same main topic<br>
-            • Working days exclude weekends (Friday/Saturday) and Hebrew holidays<br>
-            • Breaks can be added automatically after each main topic<br><br>
-            </div>
-            </details>
-            """, unsafe_allow_html=True)
-            
-            # Download button as separate element
+            # Download button
             st.download_button(
                 label="⬇️ Download Sample CSV Template",
                 data=sample_csv,
@@ -706,9 +677,7 @@ Object-Oriented Programming,Polymorphism,3</div><br>
                 single_dates.append(single_date)
     
     # Main content area
-    col1, col2 = st.columns([2, 1])
-    
-    with col1:
+    with st.container():
         st.header("📊 Syllabus Preview")
         
         if uploaded_file is not None:
@@ -830,27 +799,7 @@ Object-Oriented Programming,Polymorphism,3</div><br>
         else:
             st.info("📁 Please upload a CSV file to get started")
     
-    with col2:
-        st.header("ℹ️ Additional Info")
-        st.info("""
-        **💡 Quick Tips:**
-        
-        • Upload your CSV file to see live statistics
-        • Use the sidebar to configure your schedule settings
-        • Hebrew holidays are automatically excluded when enabled
-        • Breaks can be added between main topics
-        • Empty values in 'Days' column are filled with 0
-        """)
-        
-        # Show current date and time
-        st.subheader("🕒 Current Time")
-        current_time = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-        st.write(f"**Date:** {current_time}")
-        
-        # Show app version
-        st.subheader("📱 App Info")
-        st.write("**Version:** 2.0")
-        st.write("**Features:** Hebrew Calendar Integration")
+
 
 if __name__ == "__main__":
     main() 
