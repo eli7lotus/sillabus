@@ -526,56 +526,18 @@ def main():
     </div>
     """, unsafe_allow_html=True)
     
-    # Info box with improved UI/UX layout
+    # File upload section - full width
     with st.container():
-        # Create two main sections: Info (50%) and Upload (50%)
-        info_col, upload_col = st.columns(2)
+        # File upload with full width
+        uploaded_file = st.file_uploader(
+            "Upload Your Syllabus",
+            type=['csv'],
+            help="Upload a CSV file with Main Topic, Subtopic, and Days columns.",
+            label_visibility="collapsed"
+        )
         
-        with info_col:
-            # Create sample data for download
-            sample_data = {
-                'Main Topic': [
-                    'Introduction to Programming',
-                    'Introduction to Programming', 
-                    'Introduction to Programming',
-                    'Object-Oriented Programming',
-                    'Object-Oriented Programming',
-                    'Object-Oriented Programming'
-                ],
-                'Subtopic': [
-                    'Basic Concepts',
-                    'Variables and Data Types',
-                    'Control Structures', 
-                    'Classes and Objects',
-                    'Inheritance',
-                    'Polymorphism'
-                ],
-                'Days': [3, 2, 4, 3, 2, 3]
-            }
-            sample_df = pd.DataFrame(sample_data)
-            sample_csv = sample_df.to_csv(index=False)
-            
-            # Download button
-            st.download_button(
-                label="⬇️ Download Sample CSV Template",
-                data=sample_csv,
-                file_name="sample_syllabus.csv",
-                mime="text/csv",
-                type="primary",
-                help="Download a sample CSV file to get started"
-            )
-        
-        with upload_col:
-            # File upload with better styling and instructions
-            uploaded_file = st.file_uploader(
-                "Upload Your Syllabus",
-                type=['csv'],
-                help="Upload a CSV file with Main Topic, Subtopic, and Days columns. You can download a sample template from the left section.",
-                label_visibility="collapsed"
-            )
-            
-            if uploaded_file is not None:
-                st.success(f"✅ File uploaded: **{uploaded_file.name}**")
+        if uploaded_file is not None:
+            st.success(f"✅ File uploaded: **{uploaded_file.name}**")
     
     # Quick Stats section - landscape below instructions
     st.header("📊 Quick Stats")
