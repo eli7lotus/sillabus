@@ -662,14 +662,7 @@ def main():
                 else:
                     st.success("✅ CSV file loaded successfully!")
                     
-                    # Display preview
-                    st.subheader("📅 Schedule with Predefined Parameters")
-                    st.dataframe(syllabus_df, use_container_width=True)
-                    
-                    # Check for empty values and show info
-                    empty_days = syllabus_df['Days'].isna().sum()
-                    if empty_days > 0:
-                        st.warning(f"⚠️ Found {empty_days} empty value(s) in 'Days' column. Enable 'Handle empty values' option to process them automatically.")
+
                     
                     # Update Quick Stats with actual data
                     with col_a:
@@ -683,39 +676,35 @@ def main():
                         total_days = syllabus_df['Days'].sum(skipna=True)
                         st.metric("⏱️ Total Days", total_days)
                     
-
-                    
-                    # Generate schedule button
-                    if st.button("✨ Generate Schedule", type="primary"):
-                        with st.spinner("Generating your course schedule..."):
-                            try:
-                                # Prepare additional free days
-                                additional_free_days = set()
-                                
-                                # Add date range if specified
-                                if use_date_range and date_range_start and date_range_end:
-                                    current_date_range = date_range_start
-                                    while current_date_range <= date_range_end:
-                                        additional_free_days.add(current_date_range)
-                                        current_date_range += timedelta(days=1)
-                                
-                                # Add single dates if specified
-                                if use_single_dates and single_dates:
-                                    for single_date in single_dates:
-                                        if single_date:
-                                            additional_free_days.add(single_date)
-                                
-                                # Calculate schedule
-                                schedule_df = calculate_schedule(
-                                    syllabus_df, start_date, add_break, break_days, consider_holidays, 
-                                    additional_free_days if additional_free_days else None
-                                )
-                                
-                                # Check if schedule was generated successfully
-                                if schedule_df.empty:
-                                    st.error("❌ Failed to generate schedule. Please check your data and try again.")
-                                    return
-                                
+                    # Generate schedule automatically
+                    with st.spinner("🔄 Generating schedule..."):
+                        try:
+                            # Prepare additional free days
+                            additional_free_days = set()
+                            
+                            # Add date range if specified
+                            if use_date_range and date_range_start and date_range_end:
+                                current_date_range = date_range_start
+                                while current_date_range <= date_range_end:
+                                    additional_free_days.add(current_date_range)
+                                    current_date_range += timedelta(days=1)
+                            
+                            # Add single dates if specified
+                            if use_single_dates and single_dates:
+                                for single_date in single_dates:
+                                    if single_date:
+                                        additional_free_days.add(single_date)
+                            
+                            # Calculate schedule
+                            schedule_df = calculate_schedule(
+                                syllabus_df, start_date, add_break, break_days, consider_holidays, 
+                                additional_free_days if additional_free_days else None
+                            )
+                            
+                            # Check if schedule was generated successfully
+                            if schedule_df.empty:
+                                st.error("❌ Failed to generate schedule. Please check your data and try again.")
+                            else:
                                 # Display results
                                 st.success("🎉 Schedule generated successfully!")
                                 
@@ -757,8 +746,8 @@ def main():
                                     working_days = schedule_df[~schedule_df['Main Topic'].str.contains('Break')]['Duration (Days)'].sum()
                                     st.metric("⏱️ Total Working Days", working_days)
                                 
-                            except Exception as e:
-                                st.error(f"⚠️ Error generating schedule: {str(e)}")
+                        except Exception as e:
+                            st.error(f"⚠️ Error generating schedule: {str(e)}")
                 
             except Exception as e:
                 st.error(f"⚠️ Error reading CSV file: {str(e)}")
