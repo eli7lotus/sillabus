@@ -532,31 +532,7 @@ def main():
         info_col, upload_col = st.columns(2)
         
         with info_col:
-            # Sample Format in a compact layout
-            st.markdown("**📄 Sample Format**", help="""
-            **Required Columns:**
-            - **Main Topic**: The main subject or module name
-            - **Subtopic**: Specific topics within the main topic  
-            - **Days**: Number of working days needed for each subtopic
-            
-            **Example CSV Content:**
-            Main Topic,Subtopic,Days
-            Introduction to Programming,Basic Concepts,3
-            Introduction to Programming,Variables and Data Types,2
-            Introduction to Programming,Control Structures,4
-            Object-Oriented Programming,Classes and Objects,3
-            Object-Oriented Programming,Inheritance,2
-            Object-Oriented Programming,Polymorphism,3
-            
-            **💡 Tips:**
-            - Empty values in 'Days' column are automatically filled with 0
-            - You can have multiple subtopics under the same main topic
-            - Working days exclude weekends (Friday/Saturday) and Hebrew holidays
-            - Breaks can be added automatically after each main topic
-            """)
-            
-            # Download sample button with better styling
-            st.markdown("**📥 Get Started:**")
+            # Create sample data for download
             sample_data = {
                 'Main Topic': [
                     'Introduction to Programming',
@@ -579,13 +555,34 @@ def main():
             sample_df = pd.DataFrame(sample_data)
             sample_csv = sample_df.to_csv(index=False)
             
+            # Sample Format as clickable download button
             st.download_button(
-                label="⬇️ Download Sample CSV Template",
+                label="📄 Sample Format",
                 data=sample_csv,
                 file_name="sample_syllabus.csv",
                 mime="text/csv",
                 type="primary",
-                help="Download a sample CSV file to get started"
+                help="""
+                **Required Columns:**
+                - **Main Topic**: The main subject or module name
+                - **Subtopic**: Specific topics within the main topic  
+                - **Days**: Number of working days needed for each subtopic
+                
+                **Example CSV Content:**
+                Main Topic,Subtopic,Days
+                Introduction to Programming,Basic Concepts,3
+                Introduction to Programming,Variables and Data Types,2
+                Introduction to Programming,Control Structures,4
+                Object-Oriented Programming,Classes and Objects,3
+                Object-Oriented Programming,Inheritance,2
+                Object-Oriented Programming,Polymorphism,3
+                
+                **💡 Tips:**
+                - Empty values in 'Days' column are automatically filled with 0
+                - You can have multiple subtopics under the same main topic
+                - Working days exclude weekends (Friday/Saturday) and Hebrew holidays
+                - Breaks can be added automatically after each main topic
+                """
             )
         
         with upload_col:
