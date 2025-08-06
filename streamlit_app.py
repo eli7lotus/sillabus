@@ -43,7 +43,7 @@ st.markdown("""
     /* Modern header with clean and compact design */
     .main-header {
         background: var(--primary-gradient);
-        padding: 2rem 2rem;
+        padding: 1.5rem 2rem;
         border-radius: 16px;
         color: white;
         text-align: center;
@@ -67,7 +67,7 @@ st.markdown("""
     }
 
     .main-header h1 {
-        font-size: 2.5rem;
+        font-size: 2rem;
         font-weight: 600;
         margin-bottom: 0.5rem;
         text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
@@ -77,38 +77,40 @@ st.markdown("""
     }
 
     .main-header p {
-        font-size: 1.1rem;
-        opacity: 0.9;
+        font-size: 1rem;
+        opacity: 1;
         position: relative;
         z-index: 2;
-        font-weight: 400;
+        font-weight: 500;
         letter-spacing: 0.01em;
         margin-bottom: 0;
+        text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+        color: #ffffff;
     }
 
     /* Responsive header */
     @media (max-width: 768px) {
         .main-header {
-            padding: 1.5rem 1rem;
+            padding: 1.25rem 1rem;
             border-radius: 12px;
         }
         
         .main-header h1 {
-            font-size: 2rem;
+            font-size: 1.75rem;
         }
         
         .main-header p {
-            font-size: 1rem;
+            font-size: 0.9rem;
         }
     }
 
     @media (max-width: 480px) {
         .main-header h1 {
-            font-size: 1.8rem;
+            font-size: 1.5rem;
         }
         
         .main-header p {
-            font-size: 0.9rem;
+            font-size: 0.85rem;
         }
     }
 
