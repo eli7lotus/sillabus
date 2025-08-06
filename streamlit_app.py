@@ -555,35 +555,60 @@ def main():
             sample_df = pd.DataFrame(sample_data)
             sample_csv = sample_df.to_csv(index=False)
             
-            # Sample Format as clickable download button
-            st.download_button(
-                label="📄 Sample Format",
-                data=sample_csv,
-                file_name="sample_syllabus.csv",
-                mime="text/csv",
-                type="primary",
-                help="""
-                **Required Columns:**
-                - **Main Topic**: The main subject or module name
-                - **Subtopic**: Specific topics within the main topic  
-                - **Days**: Number of working days needed for each subtopic
-                
-                **Example CSV Content:**
-                Main Topic,Subtopic,Days
-                Introduction to Programming,Basic Concepts,3
-                Introduction to Programming,Variables and Data Types,2
-                Introduction to Programming,Control Structures,4
-                Object-Oriented Programming,Classes and Objects,3
-                Object-Oriented Programming,Inheritance,2
-                Object-Oriented Programming,Polymorphism,3
-                
-                **💡 Tips:**
-                - Empty values in 'Days' column are automatically filled with 0
-                - You can have multiple subtopics under the same main topic
-                - Working days exclude weekends (Friday/Saturday) and Hebrew holidays
-                - Breaks can be added automatically after each main topic
-                """
-            )
+            # Sample Format as clickable link with download functionality
+            st.markdown("""
+            <style>
+            .sample-link {
+                color: #0066cc;
+                text-decoration: underline;
+                cursor: pointer;
+                font-weight: 500;
+                font-size: 1rem;
+            }
+            .sample-link:hover {
+                color: #004499;
+                text-decoration: underline;
+            }
+            </style>
+            """, unsafe_allow_html=True)
+            
+            # Create a download link using HTML
+            st.markdown(f"""
+            <a href="data:text/csv;charset=utf-8,{sample_csv}" 
+               download="sample_syllabus.csv" 
+               class="sample-link"
+               title="Click to download sample CSV file">
+            📄 Sample Format
+            </a>
+            """, unsafe_allow_html=True)
+            
+            # Add tooltip information
+            st.markdown("""
+            <details style="margin-top: 10px;">
+            <summary style="cursor: pointer; color: #666; font-size: 0.9rem;">ℹ️ Format details</summary>
+            <div style="margin-left: 20px; margin-top: 10px; font-size: 0.9rem; color: #333;">
+            <strong>Required Columns:</strong><br>
+            • <strong>Main Topic:</strong> The main subject or module name<br>
+            • <strong>Subtopic:</strong> Specific topics within the main topic<br>
+            • <strong>Days:</strong> Number of working days needed for each subtopic<br><br>
+            
+            <strong>Example CSV Content:</strong><br>
+            <code>Main Topic,Subtopic,Days<br>
+            Introduction to Programming,Basic Concepts,3<br>
+            Introduction to Programming,Variables and Data Types,2<br>
+            Introduction to Programming,Control Structures,4<br>
+            Object-Oriented Programming,Classes and Objects,3<br>
+            Object-Oriented Programming,Inheritance,2<br>
+            Object-Oriented Programming,Polymorphism,3</code><br><br>
+            
+            <strong>💡 Tips:</strong><br>
+            • Empty values in 'Days' column are automatically filled with 0<br>
+            • You can have multiple subtopics under the same main topic<br>
+            • Working days exclude weekends (Friday/Saturday) and Hebrew holidays<br>
+            • Breaks can be added automatically after each main topic
+            </div>
+            </details>
+            """, unsafe_allow_html=True)
         
         with upload_col:
             # File upload with better styling and instructions
