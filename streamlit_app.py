@@ -15,7 +15,7 @@ st.set_page_config(
     initial_sidebar_state="expanded"
 )
 
-# Custom CSS for better styling
+# Custom CSS for better styling and modal
 st.markdown("""
 <style>
     .main-header {
@@ -44,7 +44,95 @@ st.markdown("""
     .stButton > button:hover {
         background: linear-gradient(135deg, #3a8bfe 0%, #00d4fe 100%);
     }
+    
+    /* Modal styles */
+    .modal {
+        display: none;
+        position: fixed;
+        z-index: 1000;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0,0,0,0.5);
+    }
+    
+    .modal-content {
+        background-color: #fefefe;
+        margin: 5% auto;
+        padding: 20px;
+        border-radius: 10px;
+        width: 80%;
+        max-width: 600px;
+        max-height: 80vh;
+        overflow-y: auto;
+    }
+    
+    .close {
+        color: #aaa;
+        float: right;
+        font-size: 28px;
+        font-weight: bold;
+        cursor: pointer;
+    }
+    
+    .close:hover,
+    .close:focus {
+        color: black;
+        text-decoration: none;
+    }
+    
+    .modal-link {
+        color: #4facfe;
+        text-decoration: underline;
+        cursor: pointer;
+        font-weight: 600;
+    }
+    
+    .modal-link:hover {
+        color: #3a8bfe;
+    }
 </style>
+
+<script>
+function openModal() {
+    document.getElementById('sampleModal').style.display = 'block';
+}
+
+function closeModal() {
+    document.getElementById('sampleModal').style.display = 'none';
+}
+
+function downloadSample() {
+    // Create sample CSV content
+    var csvContent = "Main Topic,Subtopic,Days\\n";
+    csvContent += "Introduction to Programming,Basic Concepts,3\\n";
+    csvContent += "Introduction to Programming,Variables and Data Types,2\\n";
+    csvContent += "Introduction to Programming,Control Structures,4\\n";
+    csvContent += "Object-Oriented Programming,Classes and Objects,3\\n";
+    csvContent += "Object-Oriented Programming,Inheritance,2\\n";
+    csvContent += "Object-Oriented Programming,Polymorphism,3\\n";
+    
+    // Create download link
+    var blob = new Blob([csvContent], { type: 'text/csv' });
+    var url = window.URL.createObjectURL(blob);
+    var a = document.createElement('a');
+    a.href = url;
+    a.download = 'sample_syllabus.csv';
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    window.URL.revokeObjectURL(url);
+}
+
+// Close modal when clicking outside of it
+window.onclick = function(event) {
+    var modal = document.getElementById('sampleModal');
+    if (event.target == modal) {
+        modal.style.display = 'none';
+    }
+}
+</script>
 """, unsafe_allow_html=True)
 
 def get_hebrew_holidays(year):
@@ -221,6 +309,7 @@ def main():
                 <li>Hebrew holidays are automatically excluded when enabled</li>
                 <li>Breaks can be added after each main topic completion</li>
             </ul>
+            <p>📝 Need help with the format? Click <span class="modal-link" onclick="openModal()">here to see a sample</span>.</p>
         </div>
         """, unsafe_allow_html=True)
     
@@ -392,37 +481,62 @@ def main():
             st.info("👆 Please upload a CSV file to get started")
     
     with col2:
-        st.header("📝 Sample Format")
+        st.header("📊 Quick Stats")
+        st.info("Upload a CSV file to see statistics and generate your schedule.")
+        
+        # Placeholder for stats when no file is uploaded
+        if uploaded_file is None:
+            st.metric("Main Topics", "0")
+            st.metric("Total Subtopics", "0")
+            st.metric("Total Days", "0")
+            st.metric("Empty Values", "0")
+        
+        # Add modal for sample format
         st.markdown("""
-        Your CSV should look like this:
-        
-        ```csv
-        Main Topic,Subtopic,Days
-        Introduction to Programming,Basic Concepts,3
-        Introduction to Programming,Variables and Data Types,2
-        Object-Oriented Programming,Classes and Objects,3
-        ```
-        
-        **Note**: Empty values in 'Days' column are supported and can be filled automatically.
-        """)
-        
-        # Show sample data
-        sample_data = {
-            'Main Topic': ['Introduction to Programming', 'Introduction to Programming', 'OOP'],
-            'Subtopic': ['Basic Concepts', 'Variables', 'Classes'],
-            'Days': [3, '', 3]  # Show empty value example
-        }
-        sample_df = pd.DataFrame(sample_data)
-        st.dataframe(sample_df, use_container_width=True)
-        
-        # Download sample
-        sample_csv = sample_df.to_csv(index=False)
-        st.download_button(
-            label="📥 Download Sample CSV",
-            data=sample_csv,
-            file_name="sample_syllabus.csv",
-            mime="text/csv"
-        )
+        <!-- Sample Format Modal -->
+        <div id="sampleModal" class="modal">
+            <div class="modal-content">
+                <span class="close" onclick="closeModal()">&times;</span>
+                <h2>📝 Sample CSV Format</h2>
+                <p>Your CSV file should have the following structure:</p>
+                
+                <div style="background: #f8f9fa; padding: 15px; border-radius: 8px; margin: 15px 0;">
+                    <h4>Required Columns:</h4>
+                    <ul>
+                        <li><strong>Main Topic</strong>: The main subject or module name</li>
+                        <li><strong>Subtopic</strong>: Specific topics within the main topic</li>
+                        <li><strong>Days</strong>: Number of working days needed for each subtopic</li>
+                    </ul>
+                </div>
+                
+                <h4>Example CSV Content:</h4>
+                <div style="background: #e8f5e8; padding: 10px; border-radius: 5px; font-family: monospace; margin: 10px 0;">
+                    Main Topic,Subtopic,Days<br>
+                    Introduction to Programming,Basic Concepts,3<br>
+                    Introduction to Programming,Variables and Data Types,2<br>
+                    Introduction to Programming,Control Structures,4<br>
+                    Object-Oriented Programming,Classes and Objects,3<br>
+                    Object-Oriented Programming,Inheritance,2<br>
+                    Object-Oriented Programming,Polymorphism,3
+                </div>
+                
+                <div style="background: #fff3cd; padding: 10px; border-radius: 5px; margin: 15px 0;">
+                    <h4>💡 Tips:</h4>
+                    <ul>
+                        <li>Empty values in 'Days' column are supported and can be filled automatically</li>
+                        <li>You can have multiple subtopics under the same main topic</li>
+                        <li>Working days exclude weekends (Friday/Saturday) and Hebrew holidays</li>
+                        <li>Breaks can be added automatically after each main topic</li>
+                    </ul>
+                </div>
+                
+                <div style="text-align: center; margin-top: 20px;">
+                    <button onclick="closeModal()" style="background: #4facfe; color: white; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer; margin-right: 10px;">Close</button>
+                    <button onclick="downloadSample()" style="background: #28a745; color: white; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer;">📥 Download Sample</button>
+                </div>
+            </div>
+        </div>
+        """, unsafe_allow_html=True)
 
 if __name__ == "__main__":
     main() 
