@@ -566,13 +566,13 @@ def main():
             • <strong>Days:</strong> Number of working days needed for each subtopic<br><br>
             
             <strong>Example CSV Content:</strong><br>
-            <code>Main Topic,Subtopic,Days<br>
-            Introduction to Programming,Basic Concepts,3<br>
-            Introduction to Programming,Variables and Data Types,2<br>
-            Introduction to Programming,Control Structures,4<br>
-            Object-Oriented Programming,Classes and Objects,3<br>
-            Object-Oriented Programming,Inheritance,2<br>
-            Object-Oriented Programming,Polymorphism,3</code><br><br>
+            <pre style="background-color: #f5f5f5; padding: 10px; border-radius: 5px; font-size: 0.8rem; overflow-x: auto;">Main Topic,Subtopic,Days
+Introduction to Programming,Basic Concepts,3
+Introduction to Programming,Variables and Data Types,2
+Introduction to Programming,Control Structures,4
+Object-Oriented Programming,Classes and Objects,3
+Object-Oriented Programming,Inheritance,2
+Object-Oriented Programming,Polymorphism,3</pre><br>
             
             <strong>💡 Tips:</strong><br>
             • Empty values in 'Days' column are automatically filled with 0<br>
