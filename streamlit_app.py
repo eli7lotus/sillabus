@@ -668,7 +668,11 @@ def main():
         # Regenerate Schedule button at the bottom of sidebar
         st.markdown("---")  # Separator
         if st.button("🔄 Regenerate Schedule", type="primary", use_container_width=True):
-            # Set flag to regenerate schedule
+            # Force regeneration by clearing the schedule and setting flag
+            if 'schedule_df' in st.session_state:
+                del st.session_state.schedule_df
+            if 'params_hash' in st.session_state:
+                del st.session_state.params_hash
             st.session_state.regenerate_schedule = True
     
     # Main content area
@@ -704,11 +708,25 @@ def main():
                         total_days = syllabus_df['Days'].sum(skipna=True)
                         st.metric("⏱️ Total Days", total_days)
                     
+                    # Create a hash of current parameters to detect changes
+                    current_params_hash = hash((
+                        str(start_date),
+                        str(add_break),
+                        str(break_days),
+                        str(consider_holidays),
+                        str(use_date_range),
+                        str(date_range_start),
+                        str(date_range_end),
+                        str(use_single_dates),
+                        str(single_dates)
+                    ))
+                    
                     # Check if we need to regenerate schedule
                     regenerate_needed = (
                         uploaded_file is not None and 
                         (st.session_state.get('regenerate_schedule', False) or 
-                         'schedule_df' not in st.session_state)
+                         'schedule_df' not in st.session_state or
+                         st.session_state.get('params_hash') != current_params_hash)
                     )
                     
                     if regenerate_needed:
@@ -741,9 +759,10 @@ def main():
                                 if schedule_df.empty:
                                     st.error("❌ Failed to generate schedule. Please check your data and try again.")
                                 else:
-                                    # Save schedule to session state
+                                    # Save schedule and parameters to session state
                                     st.session_state.schedule_df = schedule_df
                                     st.session_state.regenerate_schedule = False
+                                    st.session_state.params_hash = current_params_hash
                                     
                                     # Display results
                                     st.success("🎉 Schedule generated successfully!")
