@@ -15,34 +15,279 @@ st.set_page_config(
     initial_sidebar_state="expanded"
 )
 
-# Custom CSS for better styling
+# Custom CSS for modern and beautiful styling
 st.markdown("""
 <style>
+    /* Modern color palette and variables */
+    :root {
+        --primary-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        --secondary-gradient: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+        --accent-gradient: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+        --success-gradient: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
+        --warning-gradient: linear-gradient(135deg, #fa709a 0%, #fee140 100%);
+        --bg-color: #f8fafc;
+        --card-bg: #ffffff;
+        --text-primary: #1e293b;
+        --text-secondary: #64748b;
+        --border-color: #e2e8f0;
+        --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+    }
+
+    /* Global styles */
+    .main {
+        background: var(--bg-color);
+        padding: 2rem 0;
+    }
+
+    /* Modern header with glassmorphism effect */
     .main-header {
-        background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
-        padding: 2rem;
-        border-radius: 10px;
+        background: var(--primary-gradient);
+        padding: 3rem 2rem;
+        border-radius: 20px;
         color: white;
         text-align: center;
         margin-bottom: 2rem;
+        box-shadow: var(--shadow-lg);
+        position: relative;
+        overflow: hidden;
     }
-    .info-box {
-        background: #e3f2fd;
-        border: 1px solid #bbdefb;
-        border-radius: 8px;
-        padding: 1rem;
+
+    .main-header::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(255, 255, 255, 0.1);
+        backdrop-filter: blur(10px);
+        border-radius: 20px;
+    }
+
+    .main-header h1 {
+        font-size: 3rem;
+        font-weight: 700;
+        margin-bottom: 0.5rem;
+        text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+        position: relative;
+        z-index: 1;
+    }
+
+    .main-header p {
+        font-size: 1.2rem;
+        opacity: 0.9;
+        position: relative;
+        z-index: 1;
+    }
+
+    /* Modern card styling */
+    .stExpander {
+        background: var(--card-bg);
+        border-radius: 16px;
+        border: 1px solid var(--border-color);
+        box-shadow: var(--shadow);
         margin-bottom: 1rem;
+        overflow: hidden;
     }
+
+    .stExpander > div[data-testid="stExpander"] {
+        border: none;
+        background: transparent;
+    }
+
+    /* Modern button styling */
     .stButton > button {
-        background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+        background: var(--accent-gradient);
         color: white;
         border: none;
+        border-radius: 12px;
+        padding: 0.75rem 2rem;
+        font-weight: 600;
+        font-size: 1rem;
+        transition: all 0.3s ease;
+        box-shadow: var(--shadow);
+    }
+
+    .stButton > button:hover {
+        transform: translateY(-2px);
+        box-shadow: var(--shadow-lg);
+        background: linear-gradient(135deg, #3a8bfe 0%, #00d4fe 100%);
+    }
+
+    /* Modern metric cards */
+    .stMetric {
+        background: var(--card-bg);
+        border-radius: 12px;
+        padding: 1.5rem;
+        border: 1px solid var(--border-color);
+        box-shadow: var(--shadow);
+        transition: transform 0.3s ease;
+    }
+
+    .stMetric:hover {
+        transform: translateY(-2px);
+        box-shadow: var(--shadow-lg);
+    }
+
+    /* Modern file uploader */
+    .stFileUploader {
+        background: var(--card-bg);
+        border-radius: 12px;
+        border: 2px dashed var(--border-color);
+        padding: 2rem;
+        text-align: center;
+        transition: all 0.3s ease;
+    }
+
+    .stFileUploader:hover {
+        border-color: #667eea;
+        background: rgba(102, 126, 234, 0.05);
+    }
+
+    /* Modern sidebar */
+    .css-1d391kg {
+        background: var(--card-bg);
+        border-right: 1px solid var(--border-color);
+    }
+
+    .css-1d391kg .stSidebar {
+        background: var(--card-bg);
+        padding: 2rem 1rem;
+    }
+
+    /* Modern dataframe */
+    .stDataFrame {
+        background: var(--card-bg);
+        border-radius: 12px;
+        border: 1px solid var(--border-color);
+        box-shadow: var(--shadow);
+        overflow: hidden;
+    }
+
+    /* Modern info boxes */
+    .stAlert {
+        border-radius: 12px;
+        border: none;
+        box-shadow: var(--shadow);
+    }
+
+    /* Success message styling */
+    .stAlert[data-testid="stAlert"]:has(div[data-testid="stAlert"]:contains("✅")) {
+        background: var(--success-gradient);
+        color: white;
+    }
+
+    /* Error message styling */
+    .stAlert[data-testid="stAlert"]:has(div[data-testid="stAlert"]:contains("❌")) {
+        background: var(--warning-gradient);
+        color: white;
+    }
+
+    /* Modern code blocks */
+    .stCodeBlock {
+        background: #1e293b;
+        border-radius: 12px;
+        border: 1px solid #334155;
+        box-shadow: var(--shadow);
+    }
+
+    /* Modern download button */
+    .stDownloadButton > button {
+        background: var(--success-gradient);
+        color: white;
+        border: none;
+        border-radius: 12px;
+        padding: 0.75rem 2rem;
+        font-weight: 600;
+        transition: all 0.3s ease;
+        box-shadow: var(--shadow);
+    }
+
+    .stDownloadButton > button:hover {
+        transform: translateY(-2px);
+        box-shadow: var(--shadow-lg);
+    }
+
+    /* Modern date input */
+    .stDateInput > div > div {
+        border-radius: 12px;
+        border: 1px solid var(--border-color);
+        box-shadow: var(--shadow);
+    }
+
+    /* Modern number input */
+    .stNumberInput > div > div {
+        border-radius: 12px;
+        border: 1px solid var(--border-color);
+        box-shadow: var(--shadow);
+    }
+
+    /* Modern checkbox */
+    .stCheckbox > div {
         border-radius: 8px;
-        padding: 0.5rem 2rem;
+        padding: 0.5rem;
+        transition: all 0.3s ease;
+    }
+
+    .stCheckbox > div:hover {
+        background: rgba(102, 126, 234, 0.05);
+    }
+
+    /* Typography improvements */
+    h1, h2, h3, h4, h5, h6 {
+        color: var(--text-primary);
         font-weight: 600;
     }
-    .stButton > button:hover {
-        background: linear-gradient(135deg, #3a8bfe 0%, #00d4fe 100%);
+
+    p, li {
+        color: var(--text-secondary);
+        line-height: 1.6;
+    }
+
+    /* Custom scrollbar */
+    ::-webkit-scrollbar {
+        width: 8px;
+    }
+
+    ::-webkit-scrollbar-track {
+        background: var(--bg-color);
+    }
+
+    ::-webkit-scrollbar-thumb {
+        background: var(--primary-gradient);
+        border-radius: 4px;
+    }
+
+    ::-webkit-scrollbar-thumb:hover {
+        background: var(--secondary-gradient);
+    }
+
+    /* Animation for page load */
+    @keyframes fadeInUp {
+        from {
+            opacity: 0;
+            transform: translateY(20px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    .main-header, .stExpander, .stMetric {
+        animation: fadeInUp 0.6s ease-out;
+    }
+
+    /* Responsive design */
+    @media (max-width: 768px) {
+        .main-header h1 {
+            font-size: 2rem;
+        }
+        
+        .main-header p {
+            font-size: 1rem;
+        }
     }
 </style>
 """, unsafe_allow_html=True)
@@ -211,7 +456,7 @@ def main():
     
     # Info box with expandable instructions
     with st.container():
-        with st.expander("📋 Instructions", expanded=True):
+        with st.expander("📋 Instructions", expanded=False):
             st.markdown("""
             **Required CSV Format:**
             - Upload a CSV file with columns: **Main Topic**, **Subtopic**, **Days**
