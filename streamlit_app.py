@@ -556,7 +556,7 @@ def main():
             sample_csv = sample_df.to_csv(index=False)
             
             # Sample Format as expandable section with download functionality
-            st.markdown(f"""
+            st.markdown("""
             <details style="margin-bottom: 10px;">
             <summary style="cursor: pointer; color: #666; font-size: 0.9rem;">📄 Sample Format</summary>
             <div style="margin-left: 20px; margin-top: 10px; font-size: 0.9rem; color: #333;">
@@ -566,28 +566,33 @@ def main():
             • <strong>Days:</strong> Number of working days needed for each subtopic<br><br>
             
             <strong>Example CSV Content:</strong><br>
-            <pre style="background-color: #f5f5f5; padding: 10px; border-radius: 5px; font-size: 0.8rem; overflow-x: auto;">Main Topic,Subtopic,Days
+            <div style="background-color: #f5f5f5; padding: 10px; border-radius: 5px; font-size: 0.8rem; font-family: monospace; white-space: pre-wrap;">
+Main Topic,Subtopic,Days
 Introduction to Programming,Basic Concepts,3
 Introduction to Programming,Variables and Data Types,2
 Introduction to Programming,Control Structures,4
 Object-Oriented Programming,Classes and Objects,3
 Object-Oriented Programming,Inheritance,2
-Object-Oriented Programming,Polymorphism,3</pre><br>
+Object-Oriented Programming,Polymorphism,3</div><br>
             
             <strong>💡 Tips:</strong><br>
             • Empty values in 'Days' column are automatically filled with 0<br>
             • You can have multiple subtopics under the same main topic<br>
             • Working days exclude weekends (Friday/Saturday) and Hebrew holidays<br>
             • Breaks can be added automatically after each main topic<br><br>
-            
-            <a href="data:text/csv;charset=utf-8,{sample_csv}" 
-               download="sample_syllabus.csv" 
-               style="color: #0066cc; text-decoration: underline; cursor: pointer; font-weight: 500;">
-            ⬇️ Download Sample CSV Template
-            </a>
             </div>
             </details>
             """, unsafe_allow_html=True)
+            
+            # Download button as separate element
+            st.download_button(
+                label="⬇️ Download Sample CSV Template",
+                data=sample_csv,
+                file_name="sample_syllabus.csv",
+                mime="text/csv",
+                type="primary",
+                help="Download a sample CSV file to get started"
+            )
         
         with upload_col:
             # File upload with better styling and instructions
