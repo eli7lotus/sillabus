@@ -213,7 +213,7 @@ def main():
     with st.container():
         st.markdown("""
         <div class="info-box">
-            <h3>📋 Instructions</h3>
+            <h4>📋 Instructions</h4>
             <ul>
                 <li>Upload a CSV file with columns: <strong>Main Topic</strong>, <strong>Subtopic</strong>, <strong>Days</strong></li>
                 <li>Working days: Sunday - Thursday (Friday and Saturday are weekends)</li>
@@ -224,6 +224,25 @@ def main():
             <p>📝 Need help with the format? Check the "Sample Format" section below.</p>
         </div>
         """, unsafe_allow_html=True)
+    
+    # Quick Stats section - landscape below instructions
+    st.header("📊 Quick Stats")
+    
+    # Create landscape layout for stats
+    col_a, col_b, col_c, col_d = st.columns(4)
+    
+    if uploaded_file is None:
+        with col_a:
+            st.metric("Main Topics", "0")
+        with col_b:
+            st.metric("Total Subtopics", "0")
+        with col_c:
+            st.metric("Total Days", "0")
+        with col_d:
+            st.metric("Empty Values", "0")
+    else:
+        # These will be populated when file is uploaded
+        pass
     
     # Sidebar for configuration
     with st.sidebar:
@@ -313,10 +332,7 @@ def main():
                     if empty_days > 0:
                         st.warning(f"⚠️ Found {empty_days} empty value(s) in 'Days' column. Enable 'Handle empty values' option to process them automatically.")
                     
-                    # Summary statistics
-                    st.subheader("📈 Summary")
-                    col_a, col_b, col_c, col_d = st.columns(4)
-                    
+                    # Update Quick Stats with actual data
                     with col_a:
                         st.metric("Main Topics", len(syllabus_df['Main Topic'].unique()))
                     
@@ -393,16 +409,6 @@ def main():
             st.info("👆 Please upload a CSV file to get started")
     
     with col2:
-        st.header("📊 Quick Stats")
-        st.info("Upload a CSV file to see statistics and generate your schedule.")
-        
-        # Placeholder for stats when no file is uploaded
-        if uploaded_file is None:
-            st.metric("Main Topics", "0")
-            st.metric("Total Subtopics", "0")
-            st.metric("Total Days", "0")
-            st.metric("Empty Values", "0")
-        
         # Sample Format expander
         with st.expander("📝 Sample Format", expanded=False):
             st.markdown("### Required Columns:")
