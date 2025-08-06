@@ -225,6 +225,13 @@ def main():
         </div>
         """, unsafe_allow_html=True)
     
+    # File upload (moved before Quick Stats to avoid UnboundLocalError)
+    uploaded_file = st.file_uploader(
+        "📁 Upload Syllabus CSV File",
+        type=['csv'],
+        help="Upload a CSV file with Main Topic, Subtopic, and Days columns"
+    )
+    
     # Quick Stats section - landscape below instructions
     st.header("📊 Quick Stats")
     
@@ -247,13 +254,6 @@ def main():
     # Sidebar for configuration
     with st.sidebar:
         st.header("⚙️ Configuration")
-        
-        # File upload
-        uploaded_file = st.file_uploader(
-            "📁 Upload Syllabus CSV File",
-            type=['csv'],
-            help="Upload a CSV file with Main Topic, Subtopic, and Days columns"
-        )
         
         # Start date
         start_date = st.date_input(
