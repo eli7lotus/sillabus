@@ -82,8 +82,17 @@ st.markdown("""
         z-index: 2;
         letter-spacing: -0.01em;
         font-family: 'Roboto', sans-serif;
-        display: inline-block;
-        margin-right: 0.5rem;
+    }
+
+    .main-header h1 small {
+        font-size: 0.85rem;
+        opacity: 1;
+        font-weight: 400;
+        letter-spacing: 0.01em;
+        text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+        color: #ffffff;
+        font-family: 'Roboto', sans-serif;
+        margin-left: 0.5rem;
     }
 
     .main-header p {
@@ -335,13 +344,13 @@ st.markdown("""
         .main-header h1 {
             font-size: 1.3rem;
             display: block;
-            margin-right: 0;
-            margin-bottom: 0.25rem;
         }
         
-        .main-header p {
+        .main-header h1 small {
             font-size: 0.75rem;
             display: block;
+            margin-left: 0;
+            margin-top: 0.25rem;
         }
     }
 
@@ -350,7 +359,7 @@ st.markdown("""
             font-size: 1.1rem;
         }
         
-        .main-header p {
+        .main-header h1 small {
             font-size: 0.7rem;
         }
     }
@@ -513,7 +522,7 @@ def main():
     # Header
     st.markdown("""
     <div class="main-header">
-        <h1>📚 Syllabus Calculator</h1><p>Generate course schedules with Hebrew calendar integration</p>
+        <h1>📚 Syllabus Calculator <small>Generate course schedules with Hebrew calendar integration</small></h1>
     </div>
     """, unsafe_allow_html=True)
     
