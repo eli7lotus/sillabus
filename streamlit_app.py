@@ -604,8 +604,6 @@ def main():
             )
         
         with upload_col:
-            st.markdown("### 📁 File Upload")
-            
             # File upload with better styling and instructions
             uploaded_file = st.file_uploader(
                 "Upload Your Syllabus",
