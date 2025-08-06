@@ -604,11 +604,11 @@ def main():
             )
         
         with upload_col:
-            st.markdown("### 📁 Upload Your Syllabus")
+            st.markdown("### 📁 File Upload")
             
             # File upload with better styling and instructions
             uploaded_file = st.file_uploader(
-                "Choose your CSV file",
+                "Upload Your Syllabus",
                 type=['csv'],
                 help="Upload a CSV file with Main Topic, Subtopic, and Days columns. You can download a sample template from the left section.",
                 label_visibility="collapsed"
@@ -616,8 +616,6 @@ def main():
             
             if uploaded_file is not None:
                 st.success(f"✅ File uploaded: **{uploaded_file.name}**")
-            else:
-                st.info("💡 **Tip:** Upload your syllabus CSV file to get started. Use the sample template if you need help with the format.")
     
     # Quick Stats section - landscape below instructions
     st.header("📊 Quick Stats")
