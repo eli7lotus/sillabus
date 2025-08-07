@@ -548,7 +548,21 @@ def get_hebrew_holidays(year):
                 'ch''m' in title_lower or
                 'chol hamoed' in title_lower or
                 '(ch''m)' in title_lower or
-                '(chol hamoed)' in title_lower
+                '(chol hamoed)' in title_lower or
+                'sukkot ii' in title_lower or
+                'sukkot iii' in title_lower or
+                'sukkot iv' in title_lower or
+                'sukkot v' in title_lower or
+                'sukkot vi' in title_lower or
+                'sukkot vii' in title_lower or
+                'pesach ii' in title_lower or
+                'pesach iii' in title_lower or
+                'pesach iv' in title_lower or
+                'pesach v' in title_lower or
+                'pesach vi' in title_lower or
+                'pesach sheni' in title_lower or
+                'lag baomer' in title_lower or
+                'yom yerushalayim' in title_lower
             )
             
             # If excluded, skip this holiday entirely
@@ -664,7 +678,21 @@ def calculate_schedule_stats(schedule_df, start_date, end_date, consider_holiday
                         'ch''m' in title.lower() or
                         'chol hamoed' in title.lower() or
                         '(ch''m)' in title.lower() or
-                        '(chol hamoed)' in title.lower()
+                        '(chol hamoed)' in title.lower() or
+                        'sukkot ii' in title.lower() or
+                        'sukkot iii' in title.lower() or
+                        'sukkot iv' in title.lower() or
+                        'sukkot v' in title.lower() or
+                        'sukkot vi' in title.lower() or
+                        'sukkot vii' in title.lower() or
+                        'pesach ii' in title.lower() or
+                        'pesach iii' in title.lower() or
+                        'pesach iv' in title.lower() or
+                        'pesach v' in title.lower() or
+                        'pesach vi' in title.lower() or
+                        'pesach sheni' in title.lower() or
+                        'lag baomer' in title.lower() or
+                        'yom yerushalayim' in title.lower()
                     )
                     
                     # If excluded, skip this holiday entirely
