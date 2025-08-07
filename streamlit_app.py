@@ -641,7 +641,7 @@ def get_hebrew_holidays(year):
                 category in ['holiday'] and 
                 any(keyword in title_lower for keyword in [
                     'rosh hashana', 'yom kippur', 'sukkot', 'simchat torah', 
-                    'pesach i', 'shavuot', 'purim', 'tisha b\'av', 'yom haatzmaut'
+                    'pesach i', 'pesach vi', 'pesach vii', 'shavuot', 'purim', 'tisha b\'av', 'yom haatzmaut'
                 ])
             )
             
@@ -815,7 +815,7 @@ def calculate_schedule_stats(schedule_df, start_date, end_date, consider_holiday
                         category in ['holiday'] and 
                         any(keyword in title_lower for keyword in [
                             'rosh hashana', 'yom kippur', 'sukkot', 'simchat torah', 
-                            'pesach i', 'shavuot', 'purim', 'tisha b\'av', 'yom haatzmaut'
+                            'pesach i', 'pesach vi', 'pesach vii', 'shavuot', 'purim', 'tisha b\'av', 'yom haatzmaut'
                         ])
                     )
                     
