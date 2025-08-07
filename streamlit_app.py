@@ -543,7 +543,7 @@ def get_hebrew_holidays(year):
                 print(f"DEBUG: Title lower: '{title_lower}'")
             
             # Check if it's a free day holiday or Erev holiday that is a free day
-            # First exclude non-free days (case insensitive)
+            # First exclude non-free days (case insensitive) - use exact matches
             is_excluded = (
                 'rosh hashana labehemot' in title_lower or
                 'hol hamoed' in title_lower or
@@ -551,16 +551,16 @@ def get_hebrew_holidays(year):
                 'chol hamoed' in title_lower or
                 '(ch''m)' in title_lower or
                 '(chol hamoed)' in title_lower or
-                'sukkot ii' in title_lower or
-                'sukkot iii' in title_lower or
-                'sukkot iv' in title_lower or
-                'sukkot v' in title_lower or
-                'sukkot vi' in title_lower or
-                'pesach ii' in title_lower or
-                'pesach iii' in title_lower or
-                'pesach iv' in title_lower or
-                'pesach v' in title_lower or
-                'pesach vi' in title_lower or
+                title_lower == 'sukkot ii' or
+                title_lower == 'sukkot iii' or
+                title_lower == 'sukkot iv' or
+                title_lower == 'sukkot v' or
+                title_lower == 'sukkot vi' or
+                title_lower == 'pesach ii' or
+                title_lower == 'pesach iii' or
+                title_lower == 'pesach iv' or
+                title_lower == 'pesach v' or
+                title_lower == 'pesach vi' or
                 'pesach sheni' in title_lower or
                 'lag baomer' in title_lower or
                 'yom yerushalayim' in title_lower or
@@ -726,7 +726,7 @@ def calculate_schedule_stats(schedule_df, start_date, end_date, consider_holiday
                         st.write(f"DEBUG: Title lower: '{title_lower}'")
                     
                     # Check if it's a free day holiday or Erev holiday that is a free day
-                    # First exclude non-free days (case insensitive)
+                    # First exclude non-free days (case insensitive) - use exact matches
                     is_excluded = (
                         'rosh hashana labehemot' in title_lower or
                         'hol hamoed' in title_lower or
@@ -734,16 +734,16 @@ def calculate_schedule_stats(schedule_df, start_date, end_date, consider_holiday
                         'chol hamoed' in title_lower or
                         '(ch''m)' in title_lower or
                         '(chol hamoed)' in title_lower or
-                        'sukkot ii' in title_lower or
-                        'sukkot iii' in title_lower or
-                        'sukkot iv' in title_lower or
-                        'sukkot v' in title_lower or
-                        'sukkot vi' in title_lower or
-                        'pesach ii' in title_lower or
-                        'pesach iii' in title_lower or
-                        'pesach iv' in title_lower or
-                        'pesach v' in title_lower or
-                        'pesach vi' in title_lower or
+                        title_lower == 'sukkot ii' or
+                        title_lower == 'sukkot iii' or
+                        title_lower == 'sukkot iv' or
+                        title_lower == 'sukkot v' or
+                        title_lower == 'sukkot vi' or
+                        title_lower == 'pesach ii' or
+                        title_lower == 'pesach iii' or
+                        title_lower == 'pesach iv' or
+                        title_lower == 'pesach v' or
+                        title_lower == 'pesach vi' or
                         'pesach sheni' in title_lower or
                         'lag baomer' in title_lower or
                         'yom yerushalayim' in title_lower or
@@ -768,25 +768,25 @@ def calculate_schedule_stats(schedule_df, start_date, end_date, consider_holiday
                             st.write(f"DEBUG: Excluded by: (ch''m)")
                         if '(chol hamoed)' in title_lower:
                             st.write(f"DEBUG: Excluded by: (chol hamoed)")
-                        if 'sukkot ii' in title_lower:
+                        if title_lower == 'sukkot ii':
                             st.write(f"DEBUG: Excluded by: sukkot ii")
-                        if 'sukkot iii' in title_lower:
+                        if title_lower == 'sukkot iii':
                             st.write(f"DEBUG: Excluded by: sukkot iii")
-                        if 'sukkot iv' in title_lower:
+                        if title_lower == 'sukkot iv':
                             st.write(f"DEBUG: Excluded by: sukkot iv")
-                        if 'sukkot v' in title_lower:
+                        if title_lower == 'sukkot v':
                             st.write(f"DEBUG: Excluded by: sukkot v")
-                        if 'sukkot vi' in title_lower:
+                        if title_lower == 'sukkot vi':
                             st.write(f"DEBUG: Excluded by: sukkot vi")
-                        if 'pesach ii' in title_lower:
+                        if title_lower == 'pesach ii':
                             st.write(f"DEBUG: Excluded by: pesach ii")
-                        if 'pesach iii' in title_lower:
+                        if title_lower == 'pesach iii':
                             st.write(f"DEBUG: Excluded by: pesach iii")
-                        if 'pesach iv' in title_lower:
+                        if title_lower == 'pesach iv':
                             st.write(f"DEBUG: Excluded by: pesach iv")
-                        if 'pesach v' in title_lower:
+                        if title_lower == 'pesach v':
                             st.write(f"DEBUG: Excluded by: pesach v")
-                        if 'pesach vi' in title_lower:
+                        if title_lower == 'pesach vi':
                             st.write(f"DEBUG: Excluded by: pesach vi")
                         if 'pesach sheni' in title_lower:
                             st.write(f"DEBUG: Excluded by: pesach sheni")
