@@ -707,7 +707,7 @@ def calculate_schedule_stats(schedule_df, start_date, end_date, consider_holiday
                     is_free_day = (
                         category in ['holiday'] and 
                         any(keyword in title.lower() for keyword in [
-                            'rosh hashana', 'yom kippur', 'sukkot i', 'simchat torah', 
+                            'rosh hashana', 'yom kippur', 'sukkot i', 'hoshana raba', 'simchat torah', 
                             'pesach i', 'shavuot', 'purim', 'chanukah', 'tu bishvat',
                             'lag baomer', 'tisha b\'av', 'yom haatzmaut', 'yom yerushalayim'
                         ])
