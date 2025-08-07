@@ -260,41 +260,53 @@ st.markdown("""
 
     /* Summary section metrics styling */
     .summary-metrics .stMetric {
-        padding: 0.375rem;
-        min-height: 30px;
+        padding: 0.1875rem;
+        min-height: 15px;
         display: flex;
         flex-direction: column;
         justify-content: center;
-        transform: scale(0.5);
+        transform: scale(0.25);
         transform-origin: center;
     }
 
     .summary-metrics .stMetric > div {
-        font-size: 50% !important;
+        font-size: 25% !important;
+        line-height: 0.8;
     }
 
     .summary-metrics .stMetric label {
-        font-size: 50% !important;
-        line-height: 1.1;
-        margin-bottom: 0.125rem;
+        font-size: 25% !important;
+        line-height: 0.8;
+        margin-bottom: 0.0625rem;
+        max-height: 0.8em;
+        overflow: hidden;
     }
 
     .summary-metrics .stMetric [data-testid="metric-container"] {
-        font-size: 50% !important;
+        font-size: 25% !important;
+        line-height: 0.8;
     }
 
     .summary-metrics .stMetric [data-testid="metric-container"] > div {
-        font-size: 50% !important;
+        font-size: 25% !important;
+        line-height: 0.8;
     }
 
     .summary-metrics .stMetric [data-testid="metric-container"] label {
-        font-size: 50% !important;
-        line-height: 1.1;
-        max-height: 1.2em;
+        font-size: 25% !important;
+        line-height: 0.8;
+        max-height: 0.8em;
         overflow: hidden;
         display: -webkit-box;
         -webkit-line-clamp: 1;
         -webkit-box-orient: vertical;
+    }
+
+    .summary-metrics .stMetric [data-testid="metric-container"] [data-testid="metric-value"] {
+        font-size: 25% !important;
+        line-height: 0.8;
+        max-height: 0.8em;
+        overflow: hidden;
     }
 
     /* Modern file uploader */
