@@ -571,26 +571,64 @@ def calculate_schedule_stats(schedule_df, start_date, end_date, consider_holiday
     break_days = schedule_df[schedule_df['Main Topic'].str.contains('Break')]['Duration (Days)'].sum()
     stats['break_days'] = break_days
     
-    # Calculate holiday days
+    # Calculate holiday days and get holiday list
     holiday_days = 0
+    holiday_list = []
     if consider_holidays:
         # Get Hebrew holidays for the schedule period
         holidays = set()
+        holiday_names = {}
+        
         for year in range(start_date.year, end_date.year + 1):
-            holidays.update(get_hebrew_holidays(year))
+            year_holidays = get_hebrew_holidays(year)
+            holidays.update(year_holidays)
+            
+            # Get holiday names for this year
+            try:
+                url = "https://www.hebcal.com/hebcal"
+                params = {
+                    'v': 1,
+                    'cfg': 'json',
+                    'maj': 'on',
+                    'mod': 'on',
+                    'nh': 'on',
+                    'd': 'on',
+                    'lg': 's',
+                    'year': year,
+                    'start': f"{year}-01-01",
+                    'end': f"{year}-12-31"
+                }
+                
+                response = requests.get(url, params=params, timeout=10)
+                response.raise_for_status()
+                
+                data = response.json()
+                for item in data.get('items', []):
+                    if item.get('category') in ['holiday', 'roshchodesh']:
+                        date_str = item.get('date')
+                        if date_str:
+                            holiday_date = datetime.strptime(date_str, '%Y-%m-%d').date()
+                            holiday_names[holiday_date] = item.get('title', 'Unknown Holiday')
+            except:
+                pass
         
         # Add additional free days
         if additional_free_days:
             holidays.update(additional_free_days)
+            for date in additional_free_days:
+                holiday_names[date] = "Additional Free Day"
         
-        # Count holidays in the schedule period
+        # Count holidays and build list
         current_date = start_date
         while current_date <= end_date:
             if current_date in holidays:
                 holiday_days += 1
+                holiday_name = holiday_names.get(current_date, "Unknown Holiday")
+                holiday_list.append(f"{holiday_name} - {current_date.strftime('%Y-%m-%d')}")
             current_date += timedelta(days=1)
     
     stats['holiday_days'] = holiday_days
+    stats['holiday_list'] = holiday_list
     
     # Calculate Fridays and Saturdays
     friday_saturday_days = 0
@@ -1019,7 +1057,18 @@ def main():
                                         st.metric("⏸️ Break Days", additional_stats['break_days'])
                                     
                                     with col6:
-                                        st.metric("🎉 Holiday Days", additional_stats['holiday_days'])
+                                        # Holiday Days with tooltip
+                                        holiday_tooltip = ""
+                                        if additional_stats.get('holiday_list'):
+                                            holiday_tooltip = "\n".join(additional_stats['holiday_list'])
+                                        else:
+                                            holiday_tooltip = "No holidays in this period"
+                                        
+                                        st.metric(
+                                            "🎉 Holiday Days", 
+                                            additional_stats['holiday_days'],
+                                            help=holiday_tooltip
+                                        )
                                     
                                     with col7:
                                         st.metric("📅 Fridays/Saturdays", additional_stats['friday_saturday_days'])
@@ -1123,7 +1172,18 @@ def main():
                             st.metric("⏸️ Break Days", additional_stats['break_days'])
                         
                         with col6:
-                            st.metric("🎉 Holiday Days", additional_stats['holiday_days'])
+                            # Holiday Days with tooltip
+                            holiday_tooltip = ""
+                            if additional_stats.get('holiday_list'):
+                                holiday_tooltip = "\n".join(additional_stats['holiday_list'])
+                            else:
+                                holiday_tooltip = "No holidays in this period"
+                            
+                            st.metric(
+                                "🎉 Holiday Days", 
+                                additional_stats['holiday_days'],
+                                help=holiday_tooltip
+                            )
                         
                         with col7:
                             st.metric("📅 Fridays/Saturdays", additional_stats['friday_saturday_days'])
