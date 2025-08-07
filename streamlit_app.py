@@ -260,38 +260,40 @@ st.markdown("""
 
     /* Summary section metrics styling */
     .summary-metrics .stMetric {
-        padding: 0.75rem;
-        min-height: 60px;
+        padding: 0.375rem;
+        min-height: 30px;
         display: flex;
         flex-direction: column;
         justify-content: center;
+        transform: scale(0.5);
+        transform-origin: center;
     }
 
     .summary-metrics .stMetric > div {
-        font-size: 65% !important;
+        font-size: 50% !important;
     }
 
     .summary-metrics .stMetric label {
-        font-size: 65% !important;
-        line-height: 1.2;
-        margin-bottom: 0.25rem;
+        font-size: 50% !important;
+        line-height: 1.1;
+        margin-bottom: 0.125rem;
     }
 
     .summary-metrics .stMetric [data-testid="metric-container"] {
-        font-size: 65% !important;
+        font-size: 50% !important;
     }
 
     .summary-metrics .stMetric [data-testid="metric-container"] > div {
-        font-size: 65% !important;
+        font-size: 50% !important;
     }
 
     .summary-metrics .stMetric [data-testid="metric-container"] label {
-        font-size: 65% !important;
-        line-height: 1.2;
-        max-height: 2.4em;
+        font-size: 50% !important;
+        line-height: 1.1;
+        max-height: 1.2em;
         overflow: hidden;
         display: -webkit-box;
-        -webkit-line-clamp: 2;
+        -webkit-line-clamp: 1;
         -webkit-box-orient: vertical;
     }
 
