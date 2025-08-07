@@ -510,7 +510,7 @@ st.markdown("""
 
 def get_hebrew_holidays(year):
     """Fetch Hebrew holidays from hebcal.com API - only free days and Erev holidays that are free days"""
-    st.write(f"DEBUG: get_hebrew_holidays called for year={year}")
+
     try:
         url = "https://www.hebcal.com/hebcal"
         params = {
@@ -538,13 +538,7 @@ def get_hebrew_holidays(year):
             title = item.get('title', '')
             title_lower = title.lower()
             
-            # Debug: print all holiday items
-            if category in ['holiday']:
-                print(f"DEBUG: Holiday item - Title: '{title}', Category: '{category}'")
-                print(f"DEBUG: Title lower: '{title_lower}'")
-                # Special debug for Pesach-related holidays
-                if 'pesach' in title_lower:
-                    print(f"DEBUG: PESACH HOLIDAY FOUND - '{title}'")
+
             
             # Check if it's a free day holiday or Erev holiday that is a free day
             # First exclude non-free days (case insensitive)
@@ -560,32 +554,32 @@ def get_hebrew_holidays(year):
             )
             
             # Exclude all items with *(CH*2M) pattern using regex
-            print(f"DEBUG: Checking regex for *(CH*2M) in title: '{title}'")
             if re.search(r'.*\(CH.*M\)', title):
                 is_excluded = True
-                print(f"DEBUG: Excluded by regex - contains *(CH*2M) pattern")
-            else:
-                print(f"DEBUG: Regex did not match *(CH*2M) pattern: {title}")
             
             # Also exclude Sukkot II (intermediate day without CH''M)
             if title_lower == 'sukkot ii':
                 is_excluded = True
-                print(f"DEBUG: Excluded - Sukkot II (intermediate day)")
             
             # Also exclude Erev Purim
             if title_lower == 'erev purim':
                 is_excluded = True
-                print(f"DEBUG: Excluded - Erev Purim")
             
             # Also exclude Shushan Purim
             if title_lower == 'shushan purim':
                 is_excluded = True
-                print(f"DEBUG: Excluded - Shushan Purim")
             
             # Also exclude Pesach II
             if title_lower == 'pesach ii':
                 is_excluded = True
-                print(f"DEBUG: Excluded - Pesach II")
+            
+            # Also exclude Pesach VIII
+            if title_lower == 'pesach viii':
+                is_excluded = True
+            
+            # Also exclude Shavuot II
+            if title_lower == 'shavuot ii':
+                is_excluded = True
             
             # If excluded, skip this holiday entirely
             if is_excluded:
@@ -641,7 +635,7 @@ def get_hebrew_holidays(year):
                 category in ['holiday'] and 
                 any(keyword in title_lower for keyword in [
                     'rosh hashana', 'yom kippur', 'sukkot', 'simchat torah', 
-                    'pesach i', 'pesach vi', 'pesach vii', 'shavuot', 'purim', 'tisha b\'av', 'yom haatzmaut'
+                    'pesach i', 'pesach vi', 'pesach vii', 'shavuot i', 'purim', 'tisha b\'av', 'yom haatzmaut'
                 ])
             )
             
@@ -658,12 +652,6 @@ def get_hebrew_holidays(year):
                 if date_str:
                     holiday_date = datetime.strptime(date_str, '%Y-%m-%d').date()
                     holidays.add(holiday_date)
-                    print(f"DEBUG: Added holiday - '{title}' on {holiday_date}")
-            elif is_excluded:
-                print(f"DEBUG: Excluded holiday - '{title}' (excluded)")
-            elif category in ['holiday']:
-                print(f"DEBUG: Not added holiday - '{title}' (not matching criteria)")
-                print(f"DEBUG: is_free_day: {is_free_day}, is_erev_free_day: {is_erev_free_day}")
         
         return holidays
     except Exception as e:
@@ -693,7 +681,7 @@ def get_next_working_day(date, holidays):
 
 def calculate_schedule_stats(schedule_df, start_date, end_date, consider_holidays, additional_free_days=None):
     """Calculate additional statistics for the schedule"""
-    st.write(f"DEBUG: calculate_schedule_stats called with start_date={start_date}, end_date={end_date}, consider_holidays={consider_holidays}")
+
     stats = {}
     
     # Calculate break days
@@ -738,13 +726,7 @@ def calculate_schedule_stats(schedule_df, start_date, end_date, consider_holiday
                     title = item.get('title', '')
                     title_lower = title.lower()
                     
-                    # Debug: print all holiday items
-                    if category in ['holiday']:
-                        st.write(f"DEBUG: Holiday item - Title: '{title}', Category: '{category}'")
-                        st.write(f"DEBUG: Title lower: '{title_lower}'")
-                        # Special debug for Pesach-related holidays
-                        if 'pesach' in title_lower:
-                            st.write(f"DEBUG: PESACH HOLIDAY FOUND - '{title}'")
+
                     
                     # Check if it's a free day holiday or Erev holiday that is a free day
                     # First exclude non-free days (case insensitive)
@@ -760,32 +742,32 @@ def calculate_schedule_stats(schedule_df, start_date, end_date, consider_holiday
                     )
                     
                     # Exclude all items with *(CH*2M) pattern using regex
-                    st.write(f"DEBUG: Checking regex for *(CH*2M) in title: '{title}'")
                     if re.search(r'.*\(CH.*M\)', title):
                         is_excluded = True
-                        st.write(f"DEBUG: Excluded by regex - contains *(CH*2M) pattern")
-                    else:
-                        st.write(f"DEBUG: Regex did not match *(CH*2M) pattern: {title}")
                     
                     # Also exclude Sukkot II (intermediate day without CH''M)
                     if title_lower == 'sukkot ii':
                         is_excluded = True
-                        st.write(f"DEBUG: Excluded - Sukkot II (intermediate day)")
                     
                     # Also exclude Erev Purim
                     if title_lower == 'erev purim':
                         is_excluded = True
-                        st.write(f"DEBUG: Excluded - Erev Purim")
                     
                     # Also exclude Shushan Purim
                     if title_lower == 'shushan purim':
                         is_excluded = True
-                        st.write(f"DEBUG: Excluded - Shushan Purim")
                     
                     # Also exclude Pesach II
                     if title_lower == 'pesach ii':
                         is_excluded = True
-                        st.write(f"DEBUG: Excluded - Pesach II")
+                    
+                    # Also exclude Pesach VIII
+                    if title_lower == 'pesach viii':
+                        is_excluded = True
+                    
+                    # Also exclude Shavuot II
+                    if title_lower == 'shavuot ii':
+                        is_excluded = True
                     
                     # If excluded, skip this holiday entirely
                     if is_excluded:
@@ -815,7 +797,7 @@ def calculate_schedule_stats(schedule_df, start_date, end_date, consider_holiday
                         category in ['holiday'] and 
                         any(keyword in title_lower for keyword in [
                             'rosh hashana', 'yom kippur', 'sukkot', 'simchat torah', 
-                            'pesach i', 'pesach vi', 'pesach vii', 'shavuot', 'purim', 'tisha b\'av', 'yom haatzmaut'
+                            'pesach i', 'pesach vi', 'pesach vii', 'shavuot i', 'purim', 'tisha b\'av', 'yom haatzmaut'
                         ])
                     )
                     
@@ -832,7 +814,6 @@ def calculate_schedule_stats(schedule_df, start_date, end_date, consider_holiday
                         if date_str:
                             holiday_date = datetime.strptime(date_str, '%Y-%m-%d').date()
                             holiday_names[holiday_date] = item.get('title', 'Unknown Holiday')
-                            st.write(f"DEBUG: Added holiday - '{title}' on {date_str}")
             except:
                 pass
         
