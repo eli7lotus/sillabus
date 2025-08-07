@@ -571,6 +571,49 @@ def get_hebrew_holidays(year):
             if is_excluded:
                 print(f"DEBUG: Excluded holiday - '{title}' (excluded)")
                 print(f"DEBUG: is_excluded check failed for: {title_lower}")
+                # Check which specific condition caused the exclusion
+                if 'rosh hashana labehemot' in title_lower:
+                    print(f"DEBUG: Excluded by: rosh hashana labehemot")
+                if 'hol hamoed' in title_lower:
+                    print(f"DEBUG: Excluded by: hol hamoed")
+                if 'ch''m' in title_lower:
+                    print(f"DEBUG: Excluded by: ch''m")
+                if 'chol hamoed' in title_lower:
+                    print(f"DEBUG: Excluded by: chol hamoed")
+                if '(ch''m)' in title_lower:
+                    print(f"DEBUG: Excluded by: (ch''m)")
+                if '(chol hamoed)' in title_lower:
+                    print(f"DEBUG: Excluded by: (chol hamoed)")
+                if 'sukkot ii' in title_lower:
+                    print(f"DEBUG: Excluded by: sukkot ii")
+                if 'sukkot iii' in title_lower:
+                    print(f"DEBUG: Excluded by: sukkot iii")
+                if 'sukkot iv' in title_lower:
+                    print(f"DEBUG: Excluded by: sukkot iv")
+                if 'sukkot v' in title_lower:
+                    print(f"DEBUG: Excluded by: sukkot v")
+                if 'sukkot vi' in title_lower:
+                    print(f"DEBUG: Excluded by: sukkot vi")
+                if 'pesach ii' in title_lower:
+                    print(f"DEBUG: Excluded by: pesach ii")
+                if 'pesach iii' in title_lower:
+                    print(f"DEBUG: Excluded by: pesach iii")
+                if 'pesach iv' in title_lower:
+                    print(f"DEBUG: Excluded by: pesach iv")
+                if 'pesach v' in title_lower:
+                    print(f"DEBUG: Excluded by: pesach v")
+                if 'pesach vi' in title_lower:
+                    print(f"DEBUG: Excluded by: pesach vi")
+                if 'pesach sheni' in title_lower:
+                    print(f"DEBUG: Excluded by: pesach sheni")
+                if 'lag baomer' in title_lower:
+                    print(f"DEBUG: Excluded by: lag baomer")
+                if 'yom yerushalayim' in title_lower:
+                    print(f"DEBUG: Excluded by: yom yerushalayim")
+                if 'chanukah' in title_lower:
+                    print(f"DEBUG: Excluded by: chanukah")
+                if 'tu bishvat' in title_lower:
+                    print(f"DEBUG: Excluded by: tu bishvat")
                 continue
             
             # Then check if it's a free day holiday
