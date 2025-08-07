@@ -981,24 +981,41 @@ def main():
                                     
                                     # Display combined statistics in landscape layout
                                     st.markdown('<div class="summary-metrics">', unsafe_allow_html=True)
-                                    col1, col2, col3, col4 = st.columns(4)
+                                    col1, col2, col3, col4, col5 = st.columns(5)
                                     
                                     with col1:
                                         st.metric("📅 Start Date", start_date_schedule.strftime('%Y-%m-%d'))
-                                        st.metric("📅 End Date", end_date_schedule.strftime('%Y-%m-%d'))
-                                        st.metric("📅 Calendar Days", total_calendar_days)
                                     
                                     with col2:
-                                        st.metric("⏱️ Total Days", syllabus_df['Days'].sum(skipna=True))
-                                        st.metric("⏸️ Break Days", additional_stats['break_days'])
-                                        st.metric("🎉 Holiday Days", additional_stats['holiday_days'])
+                                        st.metric("📅 End Date", end_date_schedule.strftime('%Y-%m-%d'))
                                     
                                     with col3:
-                                        st.metric("📅 Fridays/Saturdays", additional_stats['friday_saturday_days'])
-                                        st.metric("📚 Main Topics", len(syllabus_df['Main Topic'].unique()))
+                                        st.metric("📅 Calendar Days", total_calendar_days)
                                     
                                     with col4:
-                                        # Empty column for better layout
+                                        st.metric("⏱️ Total Days", syllabus_df['Days'].sum(skipna=True))
+                                    
+                                    with col5:
+                                        st.metric("⏸️ Break Days", additional_stats['break_days'])
+                                    
+                                    # Second row
+                                    col6, col7, col8, col9, col10 = st.columns(5)
+                                    
+                                    with col6:
+                                        st.metric("🎉 Holiday Days", additional_stats['holiday_days'])
+                                    
+                                    with col7:
+                                        st.metric("📅 Fridays/Saturdays", additional_stats['friday_saturday_days'])
+                                    
+                                    with col8:
+                                        st.metric("📚 Main Topics", len(syllabus_df['Main Topic'].unique()))
+                                    
+                                    with col9:
+                                        # Empty column
+                                        pass
+                                    
+                                    with col10:
+                                        # Empty column
                                         pass
                                     st.markdown('</div>', unsafe_allow_html=True)
                                     
@@ -1070,24 +1087,41 @@ def main():
                         
                         # Display combined statistics in landscape layout
                         st.markdown('<div class="summary-metrics">', unsafe_allow_html=True)
-                        col1, col2, col3, col4 = st.columns(4)
+                        col1, col2, col3, col4, col5 = st.columns(5)
                         
                         with col1:
                             st.metric("📅 Start Date", start_date_schedule.strftime('%Y-%m-%d'))
-                            st.metric("📅 End Date", end_date_schedule.strftime('%Y-%m-%d'))
-                            st.metric("📅 Calendar Days", total_calendar_days)
                         
                         with col2:
-                            st.metric("⏱️ Total Days", syllabus_df['Days'].sum(skipna=True))
-                            st.metric("⏸️ Break Days", additional_stats['break_days'])
-                            st.metric("🎉 Holiday Days", additional_stats['holiday_days'])
+                            st.metric("📅 End Date", end_date_schedule.strftime('%Y-%m-%d'))
                         
                         with col3:
-                            st.metric("📅 Fridays/Saturdays", additional_stats['friday_saturday_days'])
-                            st.metric("📚 Main Topics", len(syllabus_df['Main Topic'].unique()))
+                            st.metric("📅 Calendar Days", total_calendar_days)
                         
                         with col4:
-                            # Empty column for better layout
+                            st.metric("⏱️ Total Days", syllabus_df['Days'].sum(skipna=True))
+                        
+                        with col5:
+                            st.metric("⏸️ Break Days", additional_stats['break_days'])
+                        
+                        # Second row
+                        col6, col7, col8, col9, col10 = st.columns(5)
+                        
+                        with col6:
+                            st.metric("🎉 Holiday Days", additional_stats['holiday_days'])
+                        
+                        with col7:
+                            st.metric("📅 Fridays/Saturdays", additional_stats['friday_saturday_days'])
+                        
+                        with col8:
+                            st.metric("📚 Main Topics", len(syllabus_df['Main Topic'].unique()))
+                        
+                        with col9:
+                            # Empty column
+                            pass
+                        
+                        with col10:
+                            # Empty column
                             pass
                         st.markdown('</div>', unsafe_allow_html=True)
                         
