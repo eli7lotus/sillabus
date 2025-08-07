@@ -556,13 +556,13 @@ def get_hebrew_holidays(year):
                 'tu bishvat' in title_lower
             )
             
-            # Check for CH''M pattern in the title using simple string search
-            print(f"DEBUG: Checking for CH''M in title: '{title}'")
-            if "CH''M" in title:
+            # Exclude all items with *(CH*2M) pattern using regex
+            print(f"DEBUG: Checking regex for *(CH*2M) in title: '{title}'")
+            if re.search(r'.*\(CH.*M\)', title):
                 is_excluded = True
-                print(f"DEBUG: Excluded by string search - contains CH''M pattern")
+                print(f"DEBUG: Excluded by regex - contains *(CH*2M) pattern")
             else:
-                print(f"DEBUG: String search did not find CH''M in: '{title}'")
+                print(f"DEBUG: Regex did not match *(CH*2M) pattern: {title}")
             
             # If excluded, skip this holiday entirely
             if is_excluded:
@@ -733,13 +733,13 @@ def calculate_schedule_stats(schedule_df, start_date, end_date, consider_holiday
                         'tu bishvat' in title_lower
                     )
                     
-                    # Check for CH''M pattern in the title using simple string search
-                    st.write(f"DEBUG: Checking for CH''M in title: '{title}'")
-                    if "CH''M" in title:
+                    # Exclude all items with *(CH*2M) pattern using regex
+                    st.write(f"DEBUG: Checking regex for *(CH*2M) in title: '{title}'")
+                    if re.search(r'.*\(CH.*M\)', title):
                         is_excluded = True
-                        st.write(f"DEBUG: Excluded by string search - contains CH''M pattern")
+                        st.write(f"DEBUG: Excluded by regex - contains *(CH*2M) pattern")
                     else:
-                        st.write(f"DEBUG: String search did not find CH''M in: '{title}'")
+                        st.write(f"DEBUG: Regex did not match *(CH*2M) pattern: {title}")
                     
                     # If excluded, skip this holiday entirely
                     if is_excluded:
