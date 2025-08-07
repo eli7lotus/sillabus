@@ -556,8 +556,8 @@ def get_hebrew_holidays(year):
                 'tu bishvat' in title_lower
             )
             
-            # Use regex to check for (CH''M) pattern in the title
-            if re.search(r'\(CH''M\)', title):
+            # Use regex to check for (CH''M) pattern in the title - handle both single and double quotes
+            if re.search(r'\(CH''M\)', title) or re.search(r'\(CH"M\)', title):
                 is_excluded = True
                 st.write(f"DEBUG: Excluded by regex - contains (CH''M) pattern")
             
@@ -614,9 +614,8 @@ def get_hebrew_holidays(year):
             is_free_day = (
                 category in ['holiday'] and 
                 any(keyword in title_lower for keyword in [
-                    'rosh hashana', 'yom kippur', 'sukkot i', 'sukkot vii', 'simchat torah', 
-                    'pesach i', 'shavuot', 'purim', 'chanukah', 'tu bishvat',
-                    'lag baomer', 'tisha b\'av', 'yom haatzmaut', 'yom yerushalayim'
+                    'rosh hashana', 'yom kippur', 'sukkot', 'simchat torah', 
+                    'pesach i', 'shavuot', 'purim', 'tisha b\'av', 'yom haatzmaut'
                 ])
             )
             
@@ -731,8 +730,8 @@ def calculate_schedule_stats(schedule_df, start_date, end_date, consider_holiday
                         'tu bishvat' in title_lower
                     )
                     
-                    # Use regex to check for (CH''M) pattern in the title
-                    if re.search(r'\(CH''M\)', title):
+                    # Use regex to check for (CH''M) pattern in the title - handle both single and double quotes
+                    if re.search(r'\(CH''M\)', title) or re.search(r'\(CH"M\)', title):
                         is_excluded = True
                         st.write(f"DEBUG: Excluded by regex - contains (CH''M) pattern")
                     
@@ -763,7 +762,7 @@ def calculate_schedule_stats(schedule_df, start_date, end_date, consider_holiday
                     is_free_day = (
                         category in ['holiday'] and 
                         any(keyword in title_lower for keyword in [
-                            'rosh hashana', 'yom kippur', 'sukkot i', 'sukkot vii', 'hoshana raba', 'simchat torah', 
+                            'rosh hashana', 'yom kippur', 'sukkot', 'simchat torah', 
                             'pesach i', 'shavuot', 'purim', 'tisha b\'av', 'yom haatzmaut'
                         ])
                     )
