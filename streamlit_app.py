@@ -944,21 +944,22 @@ def main():
                                     col1, col2, col3, col4 = st.columns(4)
                                     
                                     with col1:
-                                        st.metric("📚 Main Topics", len(syllabus_df['Main Topic'].unique()))
-                                        st.metric("📝 Total Subtopics", len(syllabus_df))
-                                        st.metric("⏱️ Total Days", syllabus_df['Days'].sum(skipna=True))
-                                    
-                                    with col2:
-                                        st.metric("📅 Calendar Days", total_calendar_days)
-                                    
-                                    with col3:
-                                        st.metric("⏸️ Break Days", additional_stats['break_days'])
-                                        st.metric("🎉 Holiday Days", additional_stats['holiday_days'])
-                                        st.metric("📅 Fridays/Saturdays", additional_stats['friday_saturday_days'])
-                                    
-                                    with col4:
                                         st.metric("📅 Start Date", start_date_schedule.strftime('%Y-%m-%d'))
                                         st.metric("📅 End Date", end_date_schedule.strftime('%Y-%m-%d'))
+                                        st.metric("📅 Calendar Days", total_calendar_days)
+                                    
+                                    with col2:
+                                        st.metric("⏱️ Total Days", syllabus_df['Days'].sum(skipna=True))
+                                        st.metric("⏸️ Break Days", additional_stats['break_days'])
+                                        st.metric("🎉 Holiday Days", additional_stats['holiday_days'])
+                                    
+                                    with col3:
+                                        st.metric("📅 Fridays/Saturdays", additional_stats['friday_saturday_days'])
+                                        st.metric("📚 Main Topics", len(syllabus_df['Main Topic'].unique()))
+                                    
+                                    with col4:
+                                        # Empty column for better layout
+                                        pass
                                     
                                     # Display exam dates if available
                                     if exam_dates:
@@ -1030,21 +1031,22 @@ def main():
                         col1, col2, col3, col4 = st.columns(4)
                         
                         with col1:
-                            st.metric("📚 Main Topics", len(syllabus_df['Main Topic'].unique()))
-                            st.metric("📝 Total Subtopics", len(syllabus_df))
-                            st.metric("⏱️ Total Days", syllabus_df['Days'].sum(skipna=True))
-                        
-                        with col2:
-                            st.metric("📅 Calendar Days", total_calendar_days)
-                        
-                        with col3:
-                            st.metric("⏸️ Break Days", additional_stats['break_days'])
-                            st.metric("🎉 Holiday Days", additional_stats['holiday_days'])
-                            st.metric("📅 Fridays/Saturdays", additional_stats['friday_saturday_days'])
-                        
-                        with col4:
                             st.metric("📅 Start Date", start_date_schedule.strftime('%Y-%m-%d'))
                             st.metric("📅 End Date", end_date_schedule.strftime('%Y-%m-%d'))
+                            st.metric("📅 Calendar Days", total_calendar_days)
+                        
+                        with col2:
+                            st.metric("⏱️ Total Days", syllabus_df['Days'].sum(skipna=True))
+                            st.metric("⏸️ Break Days", additional_stats['break_days'])
+                            st.metric("🎉 Holiday Days", additional_stats['holiday_days'])
+                        
+                        with col3:
+                            st.metric("📅 Fridays/Saturdays", additional_stats['friday_saturday_days'])
+                            st.metric("📚 Main Topics", len(syllabus_df['Main Topic'].unique()))
+                        
+                        with col4:
+                            # Empty column for better layout
+                            pass
                         
                         # Display exam dates if available
                         if exam_dates:
