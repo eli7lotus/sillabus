@@ -509,6 +509,7 @@ st.markdown("""
 
 def get_hebrew_holidays(year):
     """Fetch Hebrew holidays from hebcal.com API - only free days and Erev holidays that are free days"""
+    print(f"DEBUG: get_hebrew_holidays called for year={year}")
     try:
         url = "https://www.hebcal.com/hebcal"
         params = {
@@ -674,6 +675,7 @@ def get_next_working_day(date, holidays):
 
 def calculate_schedule_stats(schedule_df, start_date, end_date, consider_holidays, additional_free_days=None):
     """Calculate additional statistics for the schedule"""
+    print(f"DEBUG: calculate_schedule_stats called with start_date={start_date}, end_date={end_date}, consider_holidays={consider_holidays}")
     stats = {}
     
     # Calculate break days
