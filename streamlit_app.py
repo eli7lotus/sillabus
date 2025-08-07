@@ -536,18 +536,21 @@ def get_hebrew_holidays(year):
             title = item.get('title', '').lower()
             
             # Check if it's a free day holiday or Erev holiday that is a free day
-            # First exclude non-free days
+            # First exclude non-free days (case insensitive)
             is_excluded = (
-                'rosh hashana labehemot' in title or
-                'hol hamoed' in title or
-                'ch''m' in title
+                'rosh hashana labehemot' in title.lower() or
+                'hol hamoed' in title.lower() or
+                'ch''m' in title.lower() or
+                'chol hamoed' in title.lower() or
+                '(ch''m)' in title.lower() or
+                '(chol hamoed)' in title.lower()
             )
             
             # Then check if it's a free day holiday
             is_free_day = (
                 not is_excluded and
                 category in ['holiday'] and 
-                any(keyword in title for keyword in [
+                any(keyword in title.lower() for keyword in [
                     'rosh hashana', 'yom kippur', 'sukkot', 'simchat torah', 
                     'pesach', 'shavuot', 'purim', 'chanukah', 'tu bishvat',
                     'lag baomer', 'tisha b\'av', 'yom haatzmaut', 'yom yerushalayim'
@@ -640,18 +643,21 @@ def calculate_schedule_stats(schedule_df, start_date, end_date, consider_holiday
                     title = item.get('title', '').lower()
                     
                     # Check if it's a free day holiday or Erev holiday that is a free day
-                    # First exclude non-free days
+                    # First exclude non-free days (case insensitive)
                     is_excluded = (
-                        'rosh hashana labehemot' in title or
-                        'hol hamoed' in title or
-                        'ch''m' in title
+                        'rosh hashana labehemot' in title.lower() or
+                        'hol hamoed' in title.lower() or
+                        'ch''m' in title.lower() or
+                        'chol hamoed' in title.lower() or
+                        '(ch''m)' in title.lower() or
+                        '(chol hamoed)' in title.lower()
                     )
                     
                     # Then check if it's a free day holiday
                     is_free_day = (
                         not is_excluded and
                         category in ['holiday'] and 
-                        any(keyword in title for keyword in [
+                        any(keyword in title.lower() for keyword in [
                             'rosh hashana', 'yom kippur', 'sukkot', 'simchat torah', 
                             'pesach', 'shavuot', 'purim', 'chanukah', 'tu bishvat',
                             'lag baomer', 'tisha b\'av', 'yom haatzmaut', 'yom yerushalayim'
