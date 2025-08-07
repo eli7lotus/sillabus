@@ -432,6 +432,47 @@ def get_next_working_day(date, holidays):
         current_date += timedelta(days=1)
     return current_date
 
+def calculate_schedule_stats(schedule_df, start_date, end_date, consider_holidays, additional_free_days=None):
+    """Calculate additional statistics for the schedule"""
+    stats = {}
+    
+    # Calculate break days
+    break_days = schedule_df[schedule_df['Main Topic'].str.contains('Break')]['Duration (Days)'].sum()
+    stats['break_days'] = break_days
+    
+    # Calculate holiday days
+    holiday_days = 0
+    if consider_holidays:
+        # Get Hebrew holidays for the schedule period
+        holidays = set()
+        for year in range(start_date.year, end_date.year + 1):
+            holidays.update(get_hebrew_holidays(year))
+        
+        # Add additional free days
+        if additional_free_days:
+            holidays.update(additional_free_days)
+        
+        # Count holidays in the schedule period
+        current_date = start_date
+        while current_date <= end_date:
+            if current_date in holidays:
+                holiday_days += 1
+            current_date += timedelta(days=1)
+    
+    stats['holiday_days'] = holiday_days
+    
+    # Calculate Fridays and Saturdays
+    friday_saturday_days = 0
+    current_date = start_date
+    while current_date <= end_date:
+        if current_date.weekday() in [4, 5]:  # Friday = 4, Saturday = 5
+            friday_saturday_days += 1
+        current_date += timedelta(days=1)
+    
+    stats['friday_saturday_days'] = friday_saturday_days
+    
+    return stats
+
 def add_colors_to_schedule(schedule_df):
     """Add light background colors to schedule dataframe based on main topics"""
     # Define light colors for different topics
@@ -825,6 +866,18 @@ def main():
                                         type="primary"
                                     )
                                     
+                                    # Calculate additional statistics
+                                    start_date_schedule = datetime.strptime(schedule_df.iloc[0]['Start Date'], '%Y-%m-%d').date()
+                                    end_date_schedule = datetime.strptime(schedule_df.iloc[-1]['End Date'], '%Y-%m-%d').date()
+                                    total_calendar_days = (end_date_schedule - start_date_schedule).days + 1
+                                    working_days = schedule_df[~schedule_df['Main Topic'].str.contains('Break')]['Duration (Days)'].sum()
+                                    
+                                    # Get additional stats
+                                    additional_stats = calculate_schedule_stats(
+                                        schedule_df, start_date_schedule, end_date_schedule, 
+                                        consider_holidays, additional_free_days if additional_free_days else None
+                                    )
+                                    
                                     # Schedule summary
                                     st.subheader("📈 Schedule Summary")
                                     col_x, col_y, col_z = st.columns(3)
@@ -833,14 +886,23 @@ def main():
                                         st.metric("📋 Total Schedule Items", len(schedule_df))
                                     
                                     with col_y:
-                                        start_date_schedule = datetime.strptime(schedule_df.iloc[0]['Start Date'], '%Y-%m-%d').date()
-                                        end_date_schedule = datetime.strptime(schedule_df.iloc[-1]['End Date'], '%Y-%m-%d').date()
-                                        total_days = (end_date_schedule - start_date_schedule).days + 1
-                                        st.metric("📅 Total Calendar Days", total_days)
+                                        st.metric("📅 Total Calendar Days", total_calendar_days)
                                     
                                     with col_z:
-                                        working_days = schedule_df[~schedule_df['Main Topic'].str.contains('Break')]['Duration (Days)'].sum()
                                         st.metric("⏱️ Total Working Days", working_days)
+                                    
+                                    # Additional statistics
+                                    st.subheader("📊 Additional Statistics")
+                                    col_a, col_b, col_c = st.columns(3)
+                                    
+                                    with col_a:
+                                        st.metric("⏸️ Break Days", additional_stats['break_days'])
+                                    
+                                    with col_b:
+                                        st.metric("🎉 Holiday Days", additional_stats['holiday_days'])
+                                    
+                                    with col_c:
+                                        st.metric("📅 Fridays/Saturdays", additional_stats['friday_saturday_days'])
                                 
                             except Exception as e:
                                 st.error(f"⚠️ Error generating schedule: {str(e)}")
@@ -867,6 +929,18 @@ def main():
                             type="primary"
                         )
                         
+                        # Calculate additional statistics
+                        start_date_schedule = datetime.strptime(schedule_df.iloc[0]['Start Date'], '%Y-%m-%d').date()
+                        end_date_schedule = datetime.strptime(schedule_df.iloc[-1]['End Date'], '%Y-%m-%d').date()
+                        total_calendar_days = (end_date_schedule - start_date_schedule).days + 1
+                        working_days = schedule_df[~schedule_df['Main Topic'].str.contains('Break')]['Duration (Days)'].sum()
+                        
+                        # Get additional stats
+                        additional_stats = calculate_schedule_stats(
+                            schedule_df, start_date_schedule, end_date_schedule, 
+                            consider_holidays, additional_free_days if additional_free_days else None
+                        )
+                        
                         # Schedule summary
                         st.subheader("📈 Schedule Summary")
                         col_x, col_y, col_z = st.columns(3)
@@ -875,14 +949,23 @@ def main():
                             st.metric("📋 Total Schedule Items", len(schedule_df))
                         
                         with col_y:
-                            start_date_schedule = datetime.strptime(schedule_df.iloc[0]['Start Date'], '%Y-%m-%d').date()
-                            end_date_schedule = datetime.strptime(schedule_df.iloc[-1]['End Date'], '%Y-%m-%d').date()
-                            total_days = (end_date_schedule - start_date_schedule).days + 1
-                            st.metric("📅 Total Calendar Days", total_days)
+                            st.metric("📅 Total Calendar Days", total_calendar_days)
                         
                         with col_z:
-                            working_days = schedule_df[~schedule_df['Main Topic'].str.contains('Break')]['Duration (Days)'].sum()
                             st.metric("⏱️ Total Working Days", working_days)
+                        
+                        # Additional statistics
+                        st.subheader("📊 Additional Statistics")
+                        col_a, col_b, col_c = st.columns(3)
+                        
+                        with col_a:
+                            st.metric("⏸️ Break Days", additional_stats['break_days'])
+                        
+                        with col_b:
+                            st.metric("🎉 Holiday Days", additional_stats['holiday_days'])
+                        
+                        with col_c:
+                            st.metric("📅 Fridays/Saturdays", additional_stats['friday_saturday_days'])
                 
             except Exception as e:
                 st.error(f"⚠️ Error reading CSV file: {str(e)}")
