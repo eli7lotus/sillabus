@@ -570,6 +570,7 @@ def get_hebrew_holidays(year):
             # If excluded, skip this holiday entirely
             if is_excluded:
                 print(f"DEBUG: Excluded holiday - '{title}' (excluded)")
+                print(f"DEBUG: is_excluded check failed for: {title_lower}")
                 continue
             
             # Then check if it's a free day holiday
