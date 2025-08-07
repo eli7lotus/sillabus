@@ -949,9 +949,7 @@ def main():
                                         st.metric("⏱️ Total Days", syllabus_df['Days'].sum(skipna=True))
                                     
                                     with col2:
-                                        st.metric("📋 Schedule Items", len(schedule_df))
                                         st.metric("📅 Calendar Days", total_calendar_days)
-                                        st.metric("⏱️ Working Days", working_days)
                                     
                                     with col3:
                                         st.metric("⏸️ Break Days", additional_stats['break_days'])
@@ -959,7 +957,6 @@ def main():
                                         st.metric("📅 Fridays/Saturdays", additional_stats['friday_saturday_days'])
                                     
                                     with col4:
-                                        st.metric("📝 Exams", len(exam_dates))
                                         st.metric("📅 Start Date", start_date_schedule.strftime('%Y-%m-%d'))
                                         st.metric("📅 End Date", end_date_schedule.strftime('%Y-%m-%d'))
                                     
@@ -1038,9 +1035,7 @@ def main():
                             st.metric("⏱️ Total Days", syllabus_df['Days'].sum(skipna=True))
                         
                         with col2:
-                            st.metric("📋 Schedule Items", len(schedule_df))
                             st.metric("📅 Calendar Days", total_calendar_days)
-                            st.metric("⏱️ Working Days", working_days)
                         
                         with col3:
                             st.metric("⏸️ Break Days", additional_stats['break_days'])
@@ -1048,7 +1043,6 @@ def main():
                             st.metric("📅 Fridays/Saturdays", additional_stats['friday_saturday_days'])
                         
                         with col4:
-                            st.metric("📝 Exams", len(exam_dates))
                             st.metric("📅 Start Date", start_date_schedule.strftime('%Y-%m-%d'))
                             st.metric("📅 End Date", end_date_schedule.strftime('%Y-%m-%d'))
                         
