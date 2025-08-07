@@ -41,6 +41,79 @@ st.markdown("""
         font-family: 'Roboto', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif !important;
     }
 
+    /* Streamlit specific elements */
+    .stApp {
+        font-family: 'Roboto', sans-serif !important;
+    }
+
+    .stMarkdown {
+        font-family: 'Roboto', sans-serif !important;
+    }
+
+    .stText {
+        font-family: 'Roboto', sans-serif !important;
+    }
+
+    .stDataFrame {
+        font-family: 'Roboto', sans-serif !important;
+    }
+
+    .stMetric {
+        font-family: 'Roboto', sans-serif !important;
+    }
+
+    .stButton {
+        font-family: 'Roboto', sans-serif !important;
+    }
+
+    .stDownloadButton {
+        font-family: 'Roboto', sans-serif !important;
+    }
+
+    .stDateInput {
+        font-family: 'Roboto', sans-serif !important;
+    }
+
+    .stNumberInput {
+        font-family: 'Roboto', sans-serif !important;
+    }
+
+    .stCheckbox {
+        font-family: 'Roboto', sans-serif !important;
+    }
+
+    .stSelectbox {
+        font-family: 'Roboto', sans-serif !important;
+    }
+
+    .stFileUploader {
+        font-family: 'Roboto', sans-serif !important;
+    }
+
+    .stSidebar {
+        font-family: 'Roboto', sans-serif !important;
+    }
+
+    .stAlert {
+        font-family: 'Roboto', sans-serif !important;
+    }
+
+    .stSuccess {
+        font-family: 'Roboto', sans-serif !important;
+    }
+
+    .stError {
+        font-family: 'Roboto', sans-serif !important;
+    }
+
+    .stWarning {
+        font-family: 'Roboto', sans-serif !important;
+    }
+
+    .stInfo {
+        font-family: 'Roboto', sans-serif !important;
+    }
+
     /* Global styles */
     .main {
         background: var(--bg-color);
