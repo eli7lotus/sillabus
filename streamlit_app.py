@@ -551,9 +551,13 @@ def get_hebrew_holidays(year):
                 '(chol hamoed)' in title_lower
             )
             
+            # If excluded, skip this holiday entirely
+            if is_excluded:
+                print(f"DEBUG: Excluded holiday - '{title}' (excluded)")
+                continue
+            
             # Then check if it's a free day holiday
             is_free_day = (
-                not is_excluded and
                 category in ['holiday'] and 
                 any(keyword in title_lower for keyword in [
                     'rosh hashana', 'yom kippur', 'sukkot', 'simchat torah', 
@@ -663,9 +667,12 @@ def calculate_schedule_stats(schedule_df, start_date, end_date, consider_holiday
                         '(chol hamoed)' in title.lower()
                     )
                     
+                    # If excluded, skip this holiday entirely
+                    if is_excluded:
+                        continue
+                    
                     # Then check if it's a free day holiday
                     is_free_day = (
-                        not is_excluded and
                         category in ['holiday'] and 
                         any(keyword in title.lower() for keyword in [
                             'rosh hashana', 'yom kippur', 'sukkot', 'simchat torah', 
