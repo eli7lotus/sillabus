@@ -309,6 +309,13 @@ st.markdown("""
         overflow: hidden;
     }
 
+    /* Override Streamlit metric value font size */
+    .st-emotion-cache-1rrh444 {
+        font-size: 1.5rem !important;
+        color: rgb(38, 39, 48);
+        padding-bottom: 0.25rem;
+    }
+
     /* Modern file uploader */
     .stFileUploader {
         background: var(--card-bg);
