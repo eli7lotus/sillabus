@@ -543,7 +543,7 @@ def get_hebrew_holidays(year):
                 print(f"DEBUG: Title lower: '{title_lower}'")
             
             # Check if it's a free day holiday or Erev holiday that is a free day
-            # First exclude non-free days (case insensitive) - use exact matches
+            # First exclude non-free days (case insensitive)
             is_excluded = (
                 'rosh hashana labehemot' in title_lower or
                 'hol hamoed' in title_lower or
@@ -551,22 +551,27 @@ def get_hebrew_holidays(year):
                 'chol hamoed' in title_lower or
                 '(ch''m)' in title_lower or
                 '(chol hamoed)' in title_lower or
-                title_lower == 'sukkot ii' or
-                title_lower == 'sukkot iii' or
-                title_lower == 'sukkot iv' or
-                title_lower == 'sukkot v' or
-                title_lower == 'sukkot vi' or
-                title_lower == 'pesach ii' or
-                title_lower == 'pesach iii' or
-                title_lower == 'pesach iv' or
-                title_lower == 'pesach v' or
-                title_lower == 'pesach vi' or
+                'sukkot ii' in title_lower or
+                'sukkot iii' in title_lower or
+                'sukkot iv' in title_lower or
+                'sukkot v' in title_lower or
+                'sukkot vi' in title_lower or
+                'pesach ii' in title_lower or
+                'pesach iii' in title_lower or
+                'pesach iv' in title_lower or
+                'pesach v' in title_lower or
+                'pesach vi' in title_lower or
                 'pesach sheni' in title_lower or
                 'lag baomer' in title_lower or
                 'yom yerushalayim' in title_lower or
                 'chanukah' in title_lower or
                 'tu bishvat' in title_lower
             )
+            
+            # Special case: exclude Sukkot VII if it contains CH''M or Chol HaMoed
+            if 'sukkot vii' in title_lower and ('ch''m' in title_lower or 'chol hamoed' in title_lower):
+                is_excluded = True
+                st.write(f"DEBUG: Special case - Sukkot VII excluded because it contains CH''M or Chol HaMoed")
             
             # If excluded, skip this holiday entirely
             if is_excluded:
@@ -726,7 +731,7 @@ def calculate_schedule_stats(schedule_df, start_date, end_date, consider_holiday
                         st.write(f"DEBUG: Title lower: '{title_lower}'")
                     
                     # Check if it's a free day holiday or Erev holiday that is a free day
-                    # First exclude non-free days (case insensitive) - use exact matches
+                    # First exclude non-free days (case insensitive)
                     is_excluded = (
                         'rosh hashana labehemot' in title_lower or
                         'hol hamoed' in title_lower or
@@ -734,22 +739,27 @@ def calculate_schedule_stats(schedule_df, start_date, end_date, consider_holiday
                         'chol hamoed' in title_lower or
                         '(ch''m)' in title_lower or
                         '(chol hamoed)' in title_lower or
-                        title_lower == 'sukkot ii' or
-                        title_lower == 'sukkot iii' or
-                        title_lower == 'sukkot iv' or
-                        title_lower == 'sukkot v' or
-                        title_lower == 'sukkot vi' or
-                        title_lower == 'pesach ii' or
-                        title_lower == 'pesach iii' or
-                        title_lower == 'pesach iv' or
-                        title_lower == 'pesach v' or
-                        title_lower == 'pesach vi' or
+                        'sukkot ii' in title_lower or
+                        'sukkot iii' in title_lower or
+                        'sukkot iv' in title_lower or
+                        'sukkot v' in title_lower or
+                        'sukkot vi' in title_lower or
+                        'pesach ii' in title_lower or
+                        'pesach iii' in title_lower or
+                        'pesach iv' in title_lower or
+                        'pesach v' in title_lower or
+                        'pesach vi' in title_lower or
                         'pesach sheni' in title_lower or
                         'lag baomer' in title_lower or
                         'yom yerushalayim' in title_lower or
                         'chanukah' in title_lower or
                         'tu bishvat' in title_lower
                     )
+                    
+                    # Special case: exclude Sukkot VII if it contains CH''M or Chol HaMoed
+                    if 'sukkot vii' in title_lower and ('ch''m' in title_lower or 'chol hamoed' in title_lower):
+                        is_excluded = True
+                        st.write(f"DEBUG: Special case - Sukkot VII excluded because it contains CH''M or Chol HaMoed")
                     
                     # If excluded, skip this holiday entirely
                     if is_excluded:
@@ -768,25 +778,25 @@ def calculate_schedule_stats(schedule_df, start_date, end_date, consider_holiday
                             st.write(f"DEBUG: Excluded by: (ch''m)")
                         if '(chol hamoed)' in title_lower:
                             st.write(f"DEBUG: Excluded by: (chol hamoed)")
-                        if title_lower == 'sukkot ii':
+                        if 'sukkot ii' in title_lower:
                             st.write(f"DEBUG: Excluded by: sukkot ii")
-                        if title_lower == 'sukkot iii':
+                        if 'sukkot iii' in title_lower:
                             st.write(f"DEBUG: Excluded by: sukkot iii")
-                        if title_lower == 'sukkot iv':
+                        if 'sukkot iv' in title_lower:
                             st.write(f"DEBUG: Excluded by: sukkot iv")
-                        if title_lower == 'sukkot v':
+                        if 'sukkot v' in title_lower:
                             st.write(f"DEBUG: Excluded by: sukkot v")
-                        if title_lower == 'sukkot vi':
+                        if 'sukkot vi' in title_lower:
                             st.write(f"DEBUG: Excluded by: sukkot vi")
-                        if title_lower == 'pesach ii':
+                        if 'pesach ii' in title_lower:
                             st.write(f"DEBUG: Excluded by: pesach ii")
-                        if title_lower == 'pesach iii':
+                        if 'pesach iii' in title_lower:
                             st.write(f"DEBUG: Excluded by: pesach iii")
-                        if title_lower == 'pesach iv':
+                        if 'pesach iv' in title_lower:
                             st.write(f"DEBUG: Excluded by: pesach iv")
-                        if title_lower == 'pesach v':
+                        if 'pesach v' in title_lower:
                             st.write(f"DEBUG: Excluded by: pesach v")
-                        if title_lower == 'pesach vi':
+                        if 'pesach vi' in title_lower:
                             st.write(f"DEBUG: Excluded by: pesach vi")
                         if 'pesach sheni' in title_lower:
                             st.write(f"DEBUG: Excluded by: pesach sheni")
