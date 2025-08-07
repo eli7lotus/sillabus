@@ -564,6 +564,11 @@ def get_hebrew_holidays(year):
             else:
                 print(f"DEBUG: Regex did not match *(CH*2M) pattern: {title}")
             
+            # Also exclude Sukkot II (intermediate day without CH''M)
+            if title_lower == 'sukkot ii':
+                is_excluded = True
+                print(f"DEBUG: Excluded - Sukkot II (intermediate day)")
+            
             # If excluded, skip this holiday entirely
             if is_excluded:
                 print(f"DEBUG: Excluded holiday - '{title}' (excluded)")
@@ -740,6 +745,11 @@ def calculate_schedule_stats(schedule_df, start_date, end_date, consider_holiday
                         st.write(f"DEBUG: Excluded by regex - contains *(CH*2M) pattern")
                     else:
                         st.write(f"DEBUG: Regex did not match *(CH*2M) pattern: {title}")
+                    
+                    # Also exclude Sukkot II (intermediate day without CH''M)
+                    if title_lower == 'sukkot ii':
+                        is_excluded = True
+                        st.write(f"DEBUG: Excluded - Sukkot II (intermediate day)")
                     
                     # If excluded, skip this holiday entirely
                     if is_excluded:
