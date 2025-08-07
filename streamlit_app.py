@@ -459,8 +459,8 @@ def add_colors_to_schedule(schedule_df):
     for i, topic in enumerate(main_topics):
         color_mapping[topic] = light_colors[i % len(light_colors)]
     
-    # Apply colors to dataframe
-    def color_rows(row):
+    # Apply colors and formatting to dataframe
+    def format_rows(row):
         topic = row['Main Topic']
         if 'Break' in topic:
             # For breaks, use the same color as the main topic
@@ -468,9 +468,20 @@ def add_colors_to_schedule(schedule_df):
             color = color_mapping.get(base_topic, '#f5f5f5')
         else:
             color = color_mapping.get(topic, '#f5f5f5')
-        return ['background-color: ' + color] * len(row)
+        
+        # Create styling for each column
+        styles = []
+        for col in row.index:
+            if col == 'Main Topic':
+                # Bold text for Main Topic column
+                styles.append(f'background-color: {color}; font-weight: bold;')
+            else:
+                # Regular styling for other columns
+                styles.append(f'background-color: {color};')
+        
+        return styles
     
-    return schedule_df.style.apply(color_rows, axis=1)
+    return schedule_df.style.apply(format_rows, axis=1)
 
 def calculate_schedule(syllabus_df, start_date, add_break, break_days, consider_holidays, additional_free_days=None):
     """Calculate the course schedule based on the syllabus"""
