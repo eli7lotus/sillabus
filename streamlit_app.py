@@ -904,7 +904,6 @@ def main():
     
     # Main content area
     with st.container():
-        st.header("📊 Course Schedule")
         
         if uploaded_file is not None:
             try:
