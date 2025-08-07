@@ -533,24 +533,29 @@ def get_hebrew_holidays(year):
         for item in data.get('items', []):
             # Only include holidays that are free days or Erev holidays that are free days
             category = item.get('category', '')
-            title = item.get('title', '').lower()
+            title = item.get('title', '')
+            title_lower = title.lower()
+            
+            # Debug: print all holiday items
+            if category in ['holiday']:
+                print(f"DEBUG: Holiday item - Title: '{title}', Category: '{category}'")
             
             # Check if it's a free day holiday or Erev holiday that is a free day
             # First exclude non-free days (case insensitive)
             is_excluded = (
-                'rosh hashana labehemot' in title.lower() or
-                'hol hamoed' in title.lower() or
-                'ch''m' in title.lower() or
-                'chol hamoed' in title.lower() or
-                '(ch''m)' in title.lower() or
-                '(chol hamoed)' in title.lower()
+                'rosh hashana labehemot' in title_lower or
+                'hol hamoed' in title_lower or
+                'ch''m' in title_lower or
+                'chol hamoed' in title_lower or
+                '(ch''m)' in title_lower or
+                '(chol hamoed)' in title_lower
             )
             
             # Then check if it's a free day holiday
             is_free_day = (
                 not is_excluded and
                 category in ['holiday'] and 
-                any(keyword in title.lower() for keyword in [
+                any(keyword in title_lower for keyword in [
                     'rosh hashana', 'yom kippur', 'sukkot', 'simchat torah', 
                     'pesach', 'shavuot', 'purim', 'chanukah', 'tu bishvat',
                     'lag baomer', 'tisha b\'av', 'yom haatzmaut', 'yom yerushalayim'
@@ -559,8 +564,8 @@ def get_hebrew_holidays(year):
             
             # Check if it's Erev (eve) of a major holiday that is typically a free day
             is_erev_free_day = (
-                'erev' in title and 
-                any(keyword in title for keyword in [
+                'erev' in title_lower and 
+                any(keyword in title_lower for keyword in [
                     'rosh hashana', 'yom kippur', 'sukkot', 'pesach'
                 ])
             )
@@ -570,6 +575,11 @@ def get_hebrew_holidays(year):
                 if date_str:
                     holiday_date = datetime.strptime(date_str, '%Y-%m-%d').date()
                     holidays.add(holiday_date)
+                    print(f"DEBUG: Added holiday - '{title}' on {holiday_date}")
+            elif is_excluded:
+                print(f"DEBUG: Excluded holiday - '{title}' (excluded)")
+            elif category in ['holiday']:
+                print(f"DEBUG: Not added holiday - '{title}' (not matching criteria)")
         
         return holidays
     except Exception as e:
