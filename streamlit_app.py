@@ -555,7 +555,6 @@ def get_hebrew_holidays(year):
                 'sukkot iv' in title_lower or
                 'sukkot v' in title_lower or
                 'sukkot vi' in title_lower or
-                'sukkot vii' in title_lower or
                 'pesach ii' in title_lower or
                 'pesach iii' in title_lower or
                 'pesach iv' in title_lower or
@@ -690,7 +689,6 @@ def calculate_schedule_stats(schedule_df, start_date, end_date, consider_holiday
                         'sukkot iv' in title.lower() or
                         'sukkot v' in title.lower() or
                         'sukkot vi' in title.lower() or
-                        'sukkot vii' in title.lower() or
                         'pesach ii' in title.lower() or
                         'pesach iii' in title.lower() or
                         'pesach iv' in title.lower() or
