@@ -539,6 +539,7 @@ def get_hebrew_holidays(year):
             # Debug: print all holiday items
             if category in ['holiday']:
                 print(f"DEBUG: Holiday item - Title: '{title}', Category: '{category}'")
+                print(f"DEBUG: Title lower: '{title_lower}'")
             
             # Check if it's a free day holiday or Erev holiday that is a free day
             # First exclude non-free days (case insensitive)
@@ -599,6 +600,7 @@ def get_hebrew_holidays(year):
                 print(f"DEBUG: Excluded holiday - '{title}' (excluded)")
             elif category in ['holiday']:
                 print(f"DEBUG: Not added holiday - '{title}' (not matching criteria)")
+                print(f"DEBUG: is_free_day: {is_free_day}, is_erev_free_day: {is_erev_free_day}")
         
         return holidays
     except Exception as e:
