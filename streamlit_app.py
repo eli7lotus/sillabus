@@ -542,6 +542,9 @@ def get_hebrew_holidays(year):
             if category in ['holiday']:
                 print(f"DEBUG: Holiday item - Title: '{title}', Category: '{category}'")
                 print(f"DEBUG: Title lower: '{title_lower}'")
+                # Special debug for Pesach-related holidays
+                if 'pesach' in title_lower:
+                    print(f"DEBUG: PESACH HOLIDAY FOUND - '{title}'")
             
             # Check if it's a free day holiday or Erev holiday that is a free day
             # First exclude non-free days (case insensitive)
@@ -568,6 +571,21 @@ def get_hebrew_holidays(year):
             if title_lower == 'sukkot ii':
                 is_excluded = True
                 print(f"DEBUG: Excluded - Sukkot II (intermediate day)")
+            
+            # Also exclude Erev Purim
+            if title_lower == 'erev purim':
+                is_excluded = True
+                print(f"DEBUG: Excluded - Erev Purim")
+            
+            # Also exclude Shushan Purim
+            if title_lower == 'shushan purim':
+                is_excluded = True
+                print(f"DEBUG: Excluded - Shushan Purim")
+            
+            # Also exclude Pesach II
+            if title_lower == 'pesach ii':
+                is_excluded = True
+                print(f"DEBUG: Excluded - Pesach II")
             
             # If excluded, skip this holiday entirely
             if is_excluded:
@@ -724,6 +742,9 @@ def calculate_schedule_stats(schedule_df, start_date, end_date, consider_holiday
                     if category in ['holiday']:
                         st.write(f"DEBUG: Holiday item - Title: '{title}', Category: '{category}'")
                         st.write(f"DEBUG: Title lower: '{title_lower}'")
+                        # Special debug for Pesach-related holidays
+                        if 'pesach' in title_lower:
+                            st.write(f"DEBUG: PESACH HOLIDAY FOUND - '{title}'")
                     
                     # Check if it's a free day holiday or Erev holiday that is a free day
                     # First exclude non-free days (case insensitive)
@@ -750,6 +771,21 @@ def calculate_schedule_stats(schedule_df, start_date, end_date, consider_holiday
                     if title_lower == 'sukkot ii':
                         is_excluded = True
                         st.write(f"DEBUG: Excluded - Sukkot II (intermediate day)")
+                    
+                    # Also exclude Erev Purim
+                    if title_lower == 'erev purim':
+                        is_excluded = True
+                        st.write(f"DEBUG: Excluded - Erev Purim")
+                    
+                    # Also exclude Shushan Purim
+                    if title_lower == 'shushan purim':
+                        is_excluded = True
+                        st.write(f"DEBUG: Excluded - Shushan Purim")
+                    
+                    # Also exclude Pesach II
+                    if title_lower == 'pesach ii':
+                        is_excluded = True
+                        st.write(f"DEBUG: Excluded - Pesach II")
                     
                     # If excluded, skip this holiday entirely
                     if is_excluded:
