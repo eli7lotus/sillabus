@@ -542,7 +542,9 @@ def get_hebrew_holidays(year):
                     'rosh hashana', 'yom kippur', 'sukkot', 'simchat torah', 
                     'pesach', 'shavuot', 'purim', 'chanukah', 'tu bishvat',
                     'lag baomer', 'tisha b\'av', 'yom haatzmaut', 'yom yerushalayim'
-                ])
+                ]) and
+                'rosh hashana labehemot' not in title and
+                'hol hamoed' not in title
             )
             
             # Check if it's Erev (eve) of a major holiday that is typically a free day
@@ -637,7 +639,9 @@ def calculate_schedule_stats(schedule_df, start_date, end_date, consider_holiday
                             'rosh hashana', 'yom kippur', 'sukkot', 'simchat torah', 
                             'pesach', 'shavuot', 'purim', 'chanukah', 'tu bishvat',
                             'lag baomer', 'tisha b\'av', 'yom haatzmaut', 'yom yerushalayim'
-                        ])
+                        ]) and
+                        'rosh hashana labehemot' not in title and
+                        'hol hamoed' not in title
                     )
                     
                     # Check if it's Erev (eve) of a major holiday that is typically a free day
