@@ -1032,8 +1032,17 @@ def main():
                                     # Display exam dates if available
                                     if exam_dates:
                                         st.subheader("📝 Exam Schedule")
-                                        exam_df = pd.DataFrame(exam_dates)
-                                        st.dataframe(exam_df, use_container_width=True)
+                                        st.markdown('<div class="summary-metrics">', unsafe_allow_html=True)
+                                        exam_cols = st.columns(len(exam_dates))
+                                        
+                                        for i, exam in enumerate(exam_dates):
+                                            with exam_cols[i]:
+                                                st.metric(
+                                                    exam['Main Topic'],
+                                                    exam['Exam Date'],
+                                                    exam['Day of Week']
+                                                )
+                                        st.markdown('</div>', unsafe_allow_html=True)
                                     
                                     # Show schedule with colors
                                     st.subheader("📋 Generated Schedule")
@@ -1127,8 +1136,17 @@ def main():
                         # Display exam dates if available
                         if exam_dates:
                             st.subheader("📝 Exam Schedule")
-                            exam_df = pd.DataFrame(exam_dates)
-                            st.dataframe(exam_df, use_container_width=True)
+                            st.markdown('<div class="summary-metrics">', unsafe_allow_html=True)
+                            exam_cols = st.columns(len(exam_dates))
+                            
+                            for i, exam in enumerate(exam_dates):
+                                with exam_cols[i]:
+                                    st.metric(
+                                        exam['Main Topic'],
+                                        exam['Exam Date'],
+                                        exam['Day of Week']
+                                    )
+                            st.markdown('</div>', unsafe_allow_html=True)
                         
                         # Show schedule with colors
                         st.subheader("📋 Generated Schedule")
