@@ -508,7 +508,7 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 def get_hebrew_holidays(year):
-    """Fetch Hebrew holidays from hebcal.com API"""
+    """Fetch Hebrew holidays from hebcal.com API - only free days and Erev holidays that are free days"""
     try:
         url = "https://www.hebcal.com/hebcal"
         params = {
@@ -531,7 +531,29 @@ def get_hebrew_holidays(year):
         holidays = set()
         
         for item in data.get('items', []):
-            if item.get('category') in ['holiday', 'roshchodesh']:
+            # Only include holidays that are free days or Erev holidays that are free days
+            category = item.get('category', '')
+            title = item.get('title', '').lower()
+            
+            # Check if it's a free day holiday or Erev holiday that is a free day
+            is_free_day = (
+                category in ['holiday'] and 
+                any(keyword in title for keyword in [
+                    'rosh hashana', 'yom kippur', 'sukkot', 'simchat torah', 
+                    'pesach', 'shavuot', 'purim', 'chanukah', 'tu bishvat',
+                    'lag baomer', 'tisha b\'av', 'yom haatzmaut', 'yom yerushalayim'
+                ])
+            )
+            
+            # Check if it's Erev (eve) of a major holiday that is typically a free day
+            is_erev_free_day = (
+                'erev' in title and 
+                any(keyword in title for keyword in [
+                    'rosh hashana', 'yom kippur', 'sukkot', 'pesach'
+                ])
+            )
+            
+            if is_free_day or is_erev_free_day:
                 date_str = item.get('date')
                 if date_str:
                     holiday_date = datetime.strptime(date_str, '%Y-%m-%d').date()
@@ -604,7 +626,29 @@ def calculate_schedule_stats(schedule_df, start_date, end_date, consider_holiday
                 
                 data = response.json()
                 for item in data.get('items', []):
-                    if item.get('category') in ['holiday', 'roshchodesh']:
+                    # Only include holidays that are free days or Erev holidays that are free days
+                    category = item.get('category', '')
+                    title = item.get('title', '').lower()
+                    
+                    # Check if it's a free day holiday or Erev holiday that is a free day
+                    is_free_day = (
+                        category in ['holiday'] and 
+                        any(keyword in title for keyword in [
+                            'rosh hashana', 'yom kippur', 'sukkot', 'simchat torah', 
+                            'pesach', 'shavuot', 'purim', 'chanukah', 'tu bishvat',
+                            'lag baomer', 'tisha b\'av', 'yom haatzmaut', 'yom yerushalayim'
+                        ])
+                    )
+                    
+                    # Check if it's Erev (eve) of a major holiday that is typically a free day
+                    is_erev_free_day = (
+                        'erev' in title and 
+                        any(keyword in title for keyword in [
+                            'rosh hashana', 'yom kippur', 'sukkot', 'pesach'
+                        ])
+                    )
+                    
+                    if is_free_day or is_erev_free_day:
                         date_str = item.get('date')
                         if date_str:
                             holiday_date = datetime.strptime(date_str, '%Y-%m-%d').date()
