@@ -605,29 +605,31 @@ def calculate_schedule_stats(schedule_df, start_date, end_date, consider_holiday
     return stats
 
 def calculate_exam_dates(schedule_df, syllabus_df):
-    """Calculate exam dates for each main topic"""
+    """Calculate exam dates for each main topic that contains 'exam' or 'milestone'"""
     exam_dates = []
     
     # Get unique main topics from syllabus (excluding breaks)
     main_topics = syllabus_df['Main Topic'].unique()
     
     for topic in main_topics:
-        # Find the last subtopic for this main topic in the schedule
-        topic_schedule = schedule_df[schedule_df['Main Topic'] == topic]
-        
-        if not topic_schedule.empty:
-            # Get the end date of the last subtopic for this topic
-            last_row = topic_schedule.iloc[-1]
-            end_date = datetime.strptime(last_row['End Date'], '%Y-%m-%d').date()
+        # Only include topics that contain 'exam' or 'milestone' (case insensitive)
+        if 'exam' in topic.lower() or 'milestone' in topic.lower():
+            # Find the last subtopic for this main topic in the schedule
+            topic_schedule = schedule_df[schedule_df['Main Topic'] == topic]
             
-            # Exam is typically 1-2 working days after the topic ends
-            exam_date = get_next_working_day(end_date + timedelta(days=1), set())
-            
-            exam_dates.append({
-                'Main Topic': topic,
-                'Exam Date': exam_date.strftime('%Y-%m-%d'),
-                'Day of Week': exam_date.strftime('%A')
-            })
+            if not topic_schedule.empty:
+                # Get the end date of the last subtopic for this topic
+                last_row = topic_schedule.iloc[-1]
+                end_date = datetime.strptime(last_row['End Date'], '%Y-%m-%d').date()
+                
+                # Exam is typically 1-2 working days after the topic ends
+                exam_date = get_next_working_day(end_date + timedelta(days=1), set())
+                
+                exam_dates.append({
+                    'Main Topic': topic,
+                    'Exam Date': exam_date.strftime('%Y-%m-%d'),
+                    'Day of Week': exam_date.strftime('%A')
+                })
     
     return exam_dates
 
