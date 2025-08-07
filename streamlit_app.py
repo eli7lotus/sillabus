@@ -262,6 +262,11 @@ st.markdown("""
         text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
     }
 
+    .stDownloadButton > button *,
+    .stButton > button * {
+        color: white !important;
+    }
+
     .stDownloadButton > button:hover,
     .stButton > button:hover {
         transform: translateY(-2px);
