@@ -546,6 +546,33 @@ def calculate_schedule_stats(schedule_df, start_date, end_date, consider_holiday
     
     return stats
 
+def calculate_exam_dates(schedule_df, syllabus_df):
+    """Calculate exam dates for each main topic"""
+    exam_dates = []
+    
+    # Get unique main topics from syllabus (excluding breaks)
+    main_topics = syllabus_df['Main Topic'].unique()
+    
+    for topic in main_topics:
+        # Find the last subtopic for this main topic in the schedule
+        topic_schedule = schedule_df[schedule_df['Main Topic'] == topic]
+        
+        if not topic_schedule.empty:
+            # Get the end date of the last subtopic for this topic
+            last_row = topic_schedule.iloc[-1]
+            end_date = datetime.strptime(last_row['End Date'], '%Y-%m-%d').date()
+            
+            # Exam is typically 1-2 working days after the topic ends
+            exam_date = get_next_working_day(end_date + timedelta(days=1), set())
+            
+            exam_dates.append({
+                'Main Topic': topic,
+                'Exam Date': exam_date.strftime('%Y-%m-%d'),
+                'Day of Week': exam_date.strftime('%A')
+            })
+    
+    return exam_dates
+
 def add_colors_to_schedule(schedule_df):
     """Add light background colors to schedule dataframe based on main topics"""
     # Define light colors for different topics
@@ -726,21 +753,9 @@ def main():
         if uploaded_file is not None:
             st.success(f"✅ File uploaded: **{uploaded_file.name}**")
     
-    # Quick Stats section - landscape below instructions
-    st.header("📊 Quick Stats")
-    
-    # Create landscape layout for stats
-    col_a, col_b, col_c = st.columns(3)
-    
-    if uploaded_file is None:
-        with col_a:
-            st.metric("📚 Main Topics", "0")
-        with col_b:
-            st.metric("📝 Total Subtopics", "0")
-        with col_c:
-            st.metric("⏱️ Total Days", "0")
-    else:
-        # These will be populated when file is uploaded
+    # Summary section - will be populated when file is uploaded
+    if uploaded_file is not None:
+        # This will be populated when file is uploaded
         pass
     
     # Sidebar for configuration
@@ -848,17 +863,52 @@ def main():
                     
 
                     
-                    # Update Quick Stats with actual data
-                    with col_a:
+                    # Summary section - combined statistics
+                    st.header("📊 Summary")
+                    
+                    # Calculate all statistics
+                    start_date_schedule = datetime.strptime(schedule_df.iloc[0]['Start Date'], '%Y-%m-%d').date()
+                    end_date_schedule = datetime.strptime(schedule_df.iloc[-1]['End Date'], '%Y-%m-%d').date()
+                    total_calendar_days = (end_date_schedule - start_date_schedule).days + 1
+                    working_days = schedule_df[~schedule_df['Main Topic'].str.contains('Break')]['Duration (Days)'].sum()
+                    
+                    # Get additional stats
+                    additional_stats = calculate_schedule_stats(
+                        schedule_df, start_date_schedule, end_date_schedule, 
+                        consider_holidays, additional_free_days if additional_free_days else None
+                    )
+                    
+                    # Calculate exam dates
+                    exam_dates = calculate_exam_dates(schedule_df, syllabus_df)
+                    
+                    # Display combined statistics in landscape layout
+                    col1, col2, col3, col4 = st.columns(4)
+                    
+                    with col1:
                         st.metric("📚 Main Topics", len(syllabus_df['Main Topic'].unique()))
-                    
-                    with col_b:
                         st.metric("📝 Total Subtopics", len(syllabus_df))
+                        st.metric("⏱️ Total Days", syllabus_df['Days'].sum(skipna=True))
                     
-                    with col_c:
-                        # Calculate total days excluding NaN values
-                        total_days = syllabus_df['Days'].sum(skipna=True)
-                        st.metric("⏱️ Total Days", total_days)
+                    with col2:
+                        st.metric("📋 Schedule Items", len(schedule_df))
+                        st.metric("📅 Calendar Days", total_calendar_days)
+                        st.metric("⏱️ Working Days", working_days)
+                    
+                    with col3:
+                        st.metric("⏸️ Break Days", additional_stats['break_days'])
+                        st.metric("🎉 Holiday Days", additional_stats['holiday_days'])
+                        st.metric("📅 Fridays/Saturdays", additional_stats['friday_saturday_days'])
+                    
+                    with col4:
+                        st.metric("📝 Exams", len(exam_dates))
+                        st.metric("📅 Start Date", start_date_schedule.strftime('%Y-%m-%d'))
+                        st.metric("📅 End Date", end_date_schedule.strftime('%Y-%m-%d'))
+                    
+                    # Display exam dates if available
+                    if exam_dates:
+                        st.subheader("📝 Exam Schedule")
+                        exam_df = pd.DataFrame(exam_dates)
+                        st.dataframe(exam_df, use_container_width=True)
                     
                     # Create a hash of current parameters to detect changes
                     current_params_hash = hash((
@@ -939,43 +989,7 @@ def main():
                                         type="primary"
                                     )
                                     
-                                    # Calculate additional statistics
-                                    start_date_schedule = datetime.strptime(schedule_df.iloc[0]['Start Date'], '%Y-%m-%d').date()
-                                    end_date_schedule = datetime.strptime(schedule_df.iloc[-1]['End Date'], '%Y-%m-%d').date()
-                                    total_calendar_days = (end_date_schedule - start_date_schedule).days + 1
-                                    working_days = schedule_df[~schedule_df['Main Topic'].str.contains('Break')]['Duration (Days)'].sum()
-                                    
-                                    # Get additional stats
-                                    additional_stats = calculate_schedule_stats(
-                                        schedule_df, start_date_schedule, end_date_schedule, 
-                                        consider_holidays, additional_free_days if additional_free_days else None
-                                    )
-                                    
-                                    # Schedule summary
-                                    st.subheader("📈 Schedule Summary")
-                                    col_x, col_y, col_z = st.columns(3)
-                                    
-                                    with col_x:
-                                        st.metric("📋 Total Schedule Items", len(schedule_df))
-                                    
-                                    with col_y:
-                                        st.metric("📅 Total Calendar Days", total_calendar_days)
-                                    
-                                    with col_z:
-                                        st.metric("⏱️ Total Working Days", working_days)
-                                    
-                                    # Additional statistics
-                                    st.subheader("📊 Additional Statistics")
-                                    col_a, col_b, col_c = st.columns(3)
-                                    
-                                    with col_a:
-                                        st.metric("⏸️ Break Days", additional_stats['break_days'])
-                                    
-                                    with col_b:
-                                        st.metric("🎉 Holiday Days", additional_stats['holiday_days'])
-                                    
-                                    with col_c:
-                                        st.metric("📅 Fridays/Saturdays", additional_stats['friday_saturday_days'])
+
                                 
                             except Exception as e:
                                 st.error(f"⚠️ Error generating schedule: {str(e)}")
@@ -983,6 +997,68 @@ def main():
                     # Display existing schedule if available
                     elif 'schedule_df' in st.session_state and st.session_state.schedule_df is not None:
                         schedule_df = st.session_state.schedule_df
+                        
+                        # Summary section - combined statistics
+                        st.header("📊 Summary")
+                        
+                        # Calculate all statistics
+                        start_date_schedule = datetime.strptime(schedule_df.iloc[0]['Start Date'], '%Y-%m-%d').date()
+                        end_date_schedule = datetime.strptime(schedule_df.iloc[-1]['End Date'], '%Y-%m-%d').date()
+                        total_calendar_days = (end_date_schedule - start_date_schedule).days + 1
+                        working_days = schedule_df[~schedule_df['Main Topic'].str.contains('Break')]['Duration (Days)'].sum()
+                        
+                        # Get additional stats
+                        additional_free_days = set()
+                        
+                        # Add date range if specified
+                        if use_date_range and date_range_start and date_range_end:
+                            current_date_range = date_range_start
+                            while current_date_range <= date_range_end:
+                                additional_free_days.add(current_date_range)
+                                current_date_range += timedelta(days=1)
+                        
+                        # Add single dates if specified
+                        if use_single_dates and single_dates:
+                            for single_date in single_dates:
+                                if single_date:
+                                    additional_free_days.add(single_date)
+                        
+                        additional_stats = calculate_schedule_stats(
+                            schedule_df, start_date_schedule, end_date_schedule, 
+                            consider_holidays, additional_free_days if additional_free_days else None
+                        )
+                        
+                        # Calculate exam dates
+                        exam_dates = calculate_exam_dates(schedule_df, syllabus_df)
+                        
+                        # Display combined statistics in landscape layout
+                        col1, col2, col3, col4 = st.columns(4)
+                        
+                        with col1:
+                            st.metric("📚 Main Topics", len(syllabus_df['Main Topic'].unique()))
+                            st.metric("📝 Total Subtopics", len(syllabus_df))
+                            st.metric("⏱️ Total Days", syllabus_df['Days'].sum(skipna=True))
+                        
+                        with col2:
+                            st.metric("📋 Schedule Items", len(schedule_df))
+                            st.metric("📅 Calendar Days", total_calendar_days)
+                            st.metric("⏱️ Working Days", working_days)
+                        
+                        with col3:
+                            st.metric("⏸️ Break Days", additional_stats['break_days'])
+                            st.metric("🎉 Holiday Days", additional_stats['holiday_days'])
+                            st.metric("📅 Fridays/Saturdays", additional_stats['friday_saturday_days'])
+                        
+                        with col4:
+                            st.metric("📝 Exams", len(exam_dates))
+                            st.metric("📅 Start Date", start_date_schedule.strftime('%Y-%m-%d'))
+                            st.metric("📅 End Date", end_date_schedule.strftime('%Y-%m-%d'))
+                        
+                        # Display exam dates if available
+                        if exam_dates:
+                            st.subheader("📝 Exam Schedule")
+                            exam_df = pd.DataFrame(exam_dates)
+                            st.dataframe(exam_df, use_container_width=True)
                         
                         # Show schedule with colors
                         st.subheader("📋 Generated Schedule")
@@ -1002,43 +1078,7 @@ def main():
                             type="primary"
                         )
                         
-                        # Calculate additional statistics
-                        start_date_schedule = datetime.strptime(schedule_df.iloc[0]['Start Date'], '%Y-%m-%d').date()
-                        end_date_schedule = datetime.strptime(schedule_df.iloc[-1]['End Date'], '%Y-%m-%d').date()
-                        total_calendar_days = (end_date_schedule - start_date_schedule).days + 1
-                        working_days = schedule_df[~schedule_df['Main Topic'].str.contains('Break')]['Duration (Days)'].sum()
-                        
-                        # Get additional stats
-                        additional_stats = calculate_schedule_stats(
-                            schedule_df, start_date_schedule, end_date_schedule, 
-                            consider_holidays, additional_free_days if additional_free_days else None
-                        )
-                        
-                        # Schedule summary
-                        st.subheader("📈 Schedule Summary")
-                        col_x, col_y, col_z = st.columns(3)
-                        
-                        with col_x:
-                            st.metric("📋 Total Schedule Items", len(schedule_df))
-                        
-                        with col_y:
-                            st.metric("📅 Total Calendar Days", total_calendar_days)
-                        
-                        with col_z:
-                            st.metric("⏱️ Total Working Days", working_days)
-                        
-                        # Additional statistics
-                        st.subheader("📊 Additional Statistics")
-                        col_a, col_b, col_c = st.columns(3)
-                        
-                        with col_a:
-                            st.metric("⏸️ Break Days", additional_stats['break_days'])
-                        
-                        with col_b:
-                            st.metric("🎉 Holiday Days", additional_stats['holiday_days'])
-                        
-                        with col_c:
-                            st.metric("📅 Fridays/Saturdays", additional_stats['friday_saturday_days'])
+
                 
             except Exception as e:
                 st.error(f"⚠️ Error reading CSV file: {str(e)}")
