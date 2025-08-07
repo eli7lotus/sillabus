@@ -555,6 +555,7 @@ def get_hebrew_holidays(year):
                 'sukkot iv' in title_lower or
                 'sukkot v' in title_lower or
                 'sukkot vi' in title_lower or
+                'sukkot vii' in title_lower or
                 'pesach ii' in title_lower or
                 'pesach iii' in title_lower or
                 'pesach iv' in title_lower or
@@ -579,7 +580,8 @@ def get_hebrew_holidays(year):
                     'rosh hashana', 'yom kippur', 'sukkot', 'simchat torah', 
                     'pesach', 'shavuot', 'purim', 'chanukah', 'tu bishvat',
                     'lag baomer', 'tisha b\'av', 'yom haatzmaut', 'yom yerushalayim',
-                    'hoshana rabbah'  # Sukkot VII
+                    'hoshana rabbah',  # Sukkot VII
+                    'sukkot vii'  # Alternative name for Sukkot VII
                 ])
             )
             
@@ -688,6 +690,7 @@ def calculate_schedule_stats(schedule_df, start_date, end_date, consider_holiday
                         'sukkot iv' in title.lower() or
                         'sukkot v' in title.lower() or
                         'sukkot vi' in title.lower() or
+                        'sukkot vii' in title.lower() or
                         'pesach ii' in title.lower() or
                         'pesach iii' in title.lower() or
                         'pesach iv' in title.lower() or
@@ -711,7 +714,8 @@ def calculate_schedule_stats(schedule_df, start_date, end_date, consider_holiday
                             'rosh hashana', 'yom kippur', 'sukkot', 'simchat torah', 
                             'pesach', 'shavuot', 'purim', 'chanukah', 'tu bishvat',
                             'lag baomer', 'tisha b\'av', 'yom haatzmaut', 'yom yerushalayim',
-                            'hoshana rabbah'  # Sukkot VII
+                            'hoshana rabbah',  # Sukkot VII
+                            'sukkot vii'  # Alternative name for Sukkot VII
                         ])
                     )
                     
