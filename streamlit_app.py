@@ -251,39 +251,15 @@ st.markdown("""
     .stDownloadButton > button,
     .stButton > button {
         background: var(--primary-gradient);
-        color: white;
+        color: white !important;
         border: none;
         border-radius: 16px;
         padding: 0.75rem 2rem;
         font-weight: 700;
         transition: all 0.3s ease;
         box-shadow: var(--shadow);
-        position: relative;
-        overflow: hidden;
-        border: 1px solid rgba(255, 255, 255, 0.1);
-        text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-        letter-spacing: -0.01em;
         font-family: 'Roboto', sans-serif;
-    }
-
-    .stDownloadButton > button::before,
-    .stButton > button::before {
-        content: '';
-        position: absolute;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        background: rgba(255, 255, 255, 0.05);
-        backdrop-filter: blur(10px);
-        border-radius: 16px;
-        z-index: 1;
-    }
-
-    .stDownloadButton > button > span,
-    .stButton > button > span {
-        position: relative;
-        z-index: 2;
+        text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
     }
 
     .stDownloadButton > button:hover,
@@ -450,6 +426,46 @@ def get_next_working_day(date, holidays):
     while not is_working_day(current_date, holidays):
         current_date += timedelta(days=1)
     return current_date
+
+def add_colors_to_schedule(schedule_df):
+    """Add light background colors to schedule dataframe based on main topics"""
+    # Define light colors for different topics
+    light_colors = [
+        '#f0f8ff',  # Light blue
+        '#f0fff0',  # Light green
+        '#fff0f0',  # Light red
+        '#f0f0ff',  # Light purple
+        '#fffff0',  # Light yellow
+        '#f0ffff',  # Light cyan
+        '#fff8f0',  # Light orange
+        '#f8f0ff',  # Light lavender
+        '#f0fff8',  # Light mint
+        '#fff0f8',  # Light pink
+    ]
+    
+    # Get unique main topics (excluding breaks)
+    main_topics = []
+    for topic in schedule_df['Main Topic']:
+        if 'Break' not in topic and topic not in main_topics:
+            main_topics.append(topic)
+    
+    # Create color mapping
+    color_mapping = {}
+    for i, topic in enumerate(main_topics):
+        color_mapping[topic] = light_colors[i % len(light_colors)]
+    
+    # Apply colors to dataframe
+    def color_rows(row):
+        topic = row['Main Topic']
+        if 'Break' in topic:
+            # For breaks, use the same color as the main topic
+            base_topic = topic.replace(' - Break', '')
+            color = color_mapping.get(base_topic, '#f5f5f5')
+        else:
+            color = color_mapping.get(topic, '#f5f5f5')
+        return ['background-color: ' + color] * len(row)
+    
+    return schedule_df.style.apply(color_rows, axis=1)
 
 def calculate_schedule(syllabus_df, start_date, add_break, break_days, consider_holidays, additional_free_days=None):
     """Calculate the course schedule based on the syllabus"""
@@ -775,9 +791,10 @@ def main():
                                     if additional_free_days:
                                         st.info(f"🏖️ Excluded {len(additional_free_days)} additional free day(s) from the schedule")
                                     
-                                    # Show schedule
+                                    # Show schedule with colors
                                     st.subheader("📋 Generated Schedule")
-                                    st.dataframe(schedule_df, use_container_width=True)
+                                    colored_schedule = add_colors_to_schedule(schedule_df)
+                                    st.dataframe(colored_schedule, use_container_width=True)
                                     
                                     # Download button
                                     csv_buffer = io.StringIO()
@@ -816,9 +833,10 @@ def main():
                     elif 'schedule_df' in st.session_state and st.session_state.schedule_df is not None:
                         schedule_df = st.session_state.schedule_df
                         
-                        # Show schedule
+                        # Show schedule with colors
                         st.subheader("📋 Generated Schedule")
-                        st.dataframe(schedule_df, use_container_width=True)
+                        colored_schedule = add_colors_to_schedule(schedule_df)
+                        st.dataframe(colored_schedule, use_container_width=True)
                         
                         # Download button
                         csv_buffer = io.StringIO()
