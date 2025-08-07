@@ -562,7 +562,9 @@ def get_hebrew_holidays(year):
                 'pesach vi' in title_lower or
                 'pesach sheni' in title_lower or
                 'lag baomer' in title_lower or
-                'yom yerushalayim' in title_lower
+                'yom yerushalayim' in title_lower or
+                'chanukah' in title_lower or
+                'tu bishvat' in title_lower
             )
             
             # If excluded, skip this holiday entirely
@@ -692,7 +694,9 @@ def calculate_schedule_stats(schedule_df, start_date, end_date, consider_holiday
                         'pesach vi' in title.lower() or
                         'pesach sheni' in title.lower() or
                         'lag baomer' in title.lower() or
-                        'yom yerushalayim' in title.lower()
+                        'yom yerushalayim' in title.lower() or
+                        'chanukah' in title.lower() or
+                        'tu bishvat' in title.lower()
                     )
                     
                     # If excluded, skip this holiday entirely
