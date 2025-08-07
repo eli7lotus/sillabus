@@ -558,7 +558,7 @@ def get_hebrew_holidays(year):
             
             # Use regex to check for (CH''M) pattern in the title - handle both single and double quotes
             print(f"DEBUG: Checking regex for title: '{title}'")
-            if re.search(r'\(CH''M\)', title) or re.search(r'\(CH"M\)', title):
+            if re.search(r"\(CH''M\)", title) or re.search(r'\(CH"M\)', title):
                 is_excluded = True
                 print(f"DEBUG: Excluded by regex - contains (CH''M) pattern")
             else:
@@ -735,7 +735,7 @@ def calculate_schedule_stats(schedule_df, start_date, end_date, consider_holiday
                     
                     # Use regex to check for (CH''M) pattern in the title - handle both single and double quotes
                     st.write(f"DEBUG: Checking regex for title: '{title}'")
-                    if re.search(r'\(CH''M\)', title) or re.search(r'\(CH"M\)', title):
+                    if re.search(r"\(CH''M\)", title) or re.search(r'\(CH"M\)', title):
                         is_excluded = True
                         st.write(f"DEBUG: Excluded by regex - contains (CH''M) pattern")
                     else:
