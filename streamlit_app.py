@@ -745,6 +745,51 @@ def calculate_schedule_stats(schedule_df, start_date, end_date, consider_holiday
                     
                     # If excluded, skip this holiday entirely
                     if is_excluded:
+                        print(f"DEBUG: Excluded holiday - '{item.get('title', '')}' (excluded)")
+                        print(f"DEBUG: is_excluded check failed for: {title}")
+                        # Check which specific condition caused the exclusion
+                        if 'rosh hashana labehemot' in title:
+                            print(f"DEBUG: Excluded by: rosh hashana labehemot")
+                        if 'hol hamoed' in title:
+                            print(f"DEBUG: Excluded by: hol hamoed")
+                        if 'ch''m' in title:
+                            print(f"DEBUG: Excluded by: ch''m")
+                        if 'chol hamoed' in title:
+                            print(f"DEBUG: Excluded by: chol hamoed")
+                        if '(ch''m)' in title:
+                            print(f"DEBUG: Excluded by: (ch''m)")
+                        if '(chol hamoed)' in title:
+                            print(f"DEBUG: Excluded by: (chol hamoed)")
+                        if 'sukkot ii' in title:
+                            print(f"DEBUG: Excluded by: sukkot ii")
+                        if 'sukkot iii' in title:
+                            print(f"DEBUG: Excluded by: sukkot iii")
+                        if 'sukkot iv' in title:
+                            print(f"DEBUG: Excluded by: sukkot iv")
+                        if 'sukkot v' in title:
+                            print(f"DEBUG: Excluded by: sukkot v")
+                        if 'sukkot vi' in title:
+                            print(f"DEBUG: Excluded by: sukkot vi")
+                        if 'pesach ii' in title:
+                            print(f"DEBUG: Excluded by: pesach ii")
+                        if 'pesach iii' in title:
+                            print(f"DEBUG: Excluded by: pesach iii")
+                        if 'pesach iv' in title:
+                            print(f"DEBUG: Excluded by: pesach iv")
+                        if 'pesach v' in title:
+                            print(f"DEBUG: Excluded by: pesach v")
+                        if 'pesach vi' in title:
+                            print(f"DEBUG: Excluded by: pesach vi")
+                        if 'pesach sheni' in title:
+                            print(f"DEBUG: Excluded by: pesach sheni")
+                        if 'lag baomer' in title:
+                            print(f"DEBUG: Excluded by: lag baomer")
+                        if 'yom yerushalayim' in title:
+                            print(f"DEBUG: Excluded by: yom yerushalayim")
+                        if 'chanukah' in title:
+                            print(f"DEBUG: Excluded by: chanukah")
+                        if 'tu bishvat' in title:
+                            print(f"DEBUG: Excluded by: tu bishvat")
                         continue
                     
                     # Then check if it's a free day holiday
