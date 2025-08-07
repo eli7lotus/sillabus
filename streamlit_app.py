@@ -258,6 +258,43 @@ st.markdown("""
         box-shadow: var(--shadow-lg);
     }
 
+    /* Summary section metrics styling */
+    .summary-metrics .stMetric {
+        padding: 0.75rem;
+        min-height: 60px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+    }
+
+    .summary-metrics .stMetric > div {
+        font-size: 65% !important;
+    }
+
+    .summary-metrics .stMetric label {
+        font-size: 65% !important;
+        line-height: 1.2;
+        margin-bottom: 0.25rem;
+    }
+
+    .summary-metrics .stMetric [data-testid="metric-container"] {
+        font-size: 65% !important;
+    }
+
+    .summary-metrics .stMetric [data-testid="metric-container"] > div {
+        font-size: 65% !important;
+    }
+
+    .summary-metrics .stMetric [data-testid="metric-container"] label {
+        font-size: 65% !important;
+        line-height: 1.2;
+        max-height: 2.4em;
+        overflow: hidden;
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+    }
+
     /* Modern file uploader */
     .stFileUploader {
         background: var(--card-bg);
@@ -941,6 +978,7 @@ def main():
                                     exam_dates = calculate_exam_dates(schedule_df, syllabus_df)
                                     
                                     # Display combined statistics in landscape layout
+                                    st.markdown('<div class="summary-metrics">', unsafe_allow_html=True)
                                     col1, col2, col3, col4 = st.columns(4)
                                     
                                     with col1:
@@ -960,6 +998,7 @@ def main():
                                     with col4:
                                         # Empty column for better layout
                                         pass
+                                    st.markdown('</div>', unsafe_allow_html=True)
                                     
                                     # Display exam dates if available
                                     if exam_dates:
@@ -1028,6 +1067,7 @@ def main():
                         exam_dates = calculate_exam_dates(schedule_df, syllabus_df)
                         
                         # Display combined statistics in landscape layout
+                        st.markdown('<div class="summary-metrics">', unsafe_allow_html=True)
                         col1, col2, col3, col4 = st.columns(4)
                         
                         with col1:
@@ -1047,6 +1087,7 @@ def main():
                         with col4:
                             # Empty column for better layout
                             pass
+                        st.markdown('</div>', unsafe_allow_html=True)
                         
                         # Display exam dates if available
                         if exam_dates:
